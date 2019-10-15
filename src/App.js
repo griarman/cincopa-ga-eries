@@ -1,12 +1,13 @@
 import React from 'react';
-import Menu from './Components/Menu'
-
+import LibrarySideMenu from "./Components/LibrarySideMenu";
+import LibraryArea from "./Components/LibraryArea";
 import './app.scss'
 
 function App() {
   return (
-    <div className="container" id='container'>
-        <Menu/>
+    <div className="myContainer">
+      <LibrarySideMenu />
+      <LibraryArea />
     </div>
   );
 }
