@@ -49,6 +49,15 @@
       & .headLeft {
         max-width: 30%;
       }
+
+      & .searchBox {
+        margin-left: 0 !important;
+        border: none;
+      }
+
+      & .headRight {
+        max-width: 70%;
+      }
     }
   }
 }
