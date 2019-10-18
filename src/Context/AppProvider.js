@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
-import axios from 'axios'
+import axios from 'axios-jsonp-pro'
 
+import Helpers from '../libs/helpers'
 import { myApiImitation, urls} from '../Constants/index';
 import MyContext from './MyContext';
 
@@ -19,24 +20,38 @@ class AppProvider extends Component {
           changeSearchTags: this.changeSearchTags,
           getGalleriesFromServer: this.getGalleriesFromServer,
           searchTags: []
-        }
+        },
+        foldersWholeData: [],
       },
-      initialize: false
+      initialize: false,
     }
   }
 
   componentDidMount() {
-    this.getGalleriesFromServer({
-     url: urls.analyticsUrl
+    let promises = [];
+    this.state.app_getList.folders.forEach(el => {
+      let promise = new Promise(response => {
+        this.getGalleriesFromServer({
+          url: urls.getStatusUrl,
+          method: "POST",
+          cache: false,
+          dataType: 'jsonp',
+          data: {
+            cmd: 'getstatus',
+            fid: el.sysdata.fid
+          },
+        });
+      });
+     promises.push(promise);
     });
     this.setState({
       initialize: true
-    })
+    });
+
   }
 
   render() {
     if(!this.state.initialize) return null;
-    console.log(this.state);
     return (
       <MyContext.Provider value={this.state.app_getList}>
         {this.props.children}
@@ -57,8 +72,24 @@ class AppProvider extends Component {
     }));
   };
 
-  changeGalleriesFolders = folders => {
+  changeGalleriesFolders = (foldersData, type = 'add') => {
+    switch (type) {
+      case 'add':
+        this.setState(prevState => (
+          {
+            ...prevState,
+            app_getList: {
+              ...prevState.app_getList,
+              foldersWholeData: [
+                ...prevState.app_getList.foldersWholeData,
+                foldersData
+              ]
+            }
 
+          }
+        ), () => console.log(this.state));
+        break;
+    }
   };
 
   getGalleriesFromServer = (params )=> {
@@ -72,14 +103,36 @@ class AppProvider extends Component {
       search: '',
       tags: '',
     };
+    // if (requireKeys.every(el => Object.keys(params).includes(el))) {}
 
-    if (requireKeys.every(el => Object.keys(params).includes(el))) {
+   this.doRequest('https://www.cincopa.com' + params.url, params.data).then(data => {
+      this.changeGalleriesFolders(data);
+    });
+  };
 
-    }
-    // axios(params).then(callback);
+  doRequest = (origin, params) => {
+    return new Promise((resolve, reject) => {
+      let query = '?';
+      const callbackName = `JQuery${Helpers.getRandomString()}`;
+
+      Object.entries(params).forEach(([key, value]) => {
+        query += `${key}=${encodeURIComponent(value)}&`;
+      });
+
+      query +=`callback=${callbackName}`;
+
+      const script = document.createElement('script');
+      script.src = `${origin}${query}`;
+
+        window[callbackName] = function(res) {
+          document.body.removeChild(script);
+          delete window[callbackName];
+          resolve(res);
+        };
+
+      document.body.appendChild(script);
+    })
   }
 }
-
-
 
 export default AppProvider;

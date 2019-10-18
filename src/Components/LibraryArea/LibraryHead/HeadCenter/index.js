@@ -18,11 +18,6 @@ const HeadCenter = () =>(
               searchTags={searchTags}
             />)}
         </div>
-        {getGalleriesFromServer({
-          a: 10,
-          b: 35,
-          c: 'asdasdas'
-        })}
       </div>
     )}
   </MyContext.Consumer>
