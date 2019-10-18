@@ -1,30 +1,24 @@
 import React from 'react'
 
-import MyContext from '../../../../MyContext'
 import './headLeft.scss'
 
-const HeadLeft = () => (
-  <MyContext.Consumer>
-    {value => {
-      return (
-        <div className='headLeft'>
-          <div className='searchBox'>
-            <a className='search_img btn trans'>
-              <i className='icon-search'/>
-            </a>
-            <input
-              type='text'
-              placeholder='Search...'
-              className='search_input'
-              onInput={showDelButton}
-            />
-            <a onClick={resetInput} className='reset_search'>X</a>
-          </div>
-        </div>
-      )
-    }}
-  </MyContext.Consumer>
-);
+const HeadLeft = () =>
+  (
+    <div className='headLeft'>
+      <div className='searchBox'>
+        <a className='search_img btn trans'>
+          <i className='icon-search'/>
+        </a>
+        <input
+          type='text'
+          placeholder='Search...'
+          className='search_input'
+          onInput={showDelButton}
+        />
+        <a onClick={resetInput} className='reset_search'>X</a>
+      </div>
+    </div>
+  );
 
 function resetInput(e) {
   e.preventDefault();

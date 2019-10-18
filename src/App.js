@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import LibrarySideMenu from "./Components/LibrarySideMenu";
 import LibraryArea from "./Components/LibraryArea";
-import AppProvider from './AppProvider';
+import AppProvider from './Context/AppProvider';
 import './app.scss'
 
 class App extends Component{
