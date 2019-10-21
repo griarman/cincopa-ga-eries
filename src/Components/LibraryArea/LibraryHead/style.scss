@@ -1,0 +1,30 @@
+.library-head {
+  position: fixed;
+  top: 58px;
+  z-index: 97;
+  width: 100%;
+  padding: 12px;
+  padding-left: 315px;
+  left: 0;
+  clear: both;
+  border: 1px solid #d8dadf;
+  background: #f6f7fb;
+  text-align: center;
+  min-height: 80px;
+  line-height: 50px;
+  height: 81px;
+  display: table;
+  table-layout: auto;
+  max-width: 100%;
+
+  & > .headLeft {
+    text-align: left;
+  }
+
+  & > div {
+    display: table-cell;
+    vertical-align: middle !important;
+    float: none !important;
+    width: auto;
+  }
+}

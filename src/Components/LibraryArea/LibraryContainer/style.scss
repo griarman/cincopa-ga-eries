@@ -1,0 +1,21 @@
+.libraryContainer {
+  clear: both;
+  width: 100%;
+  display: table;
+  table-layout: fixed;
+  border-collapse: collapse;
+  border: 1px solid #d8dadf;
+  border-left: none;
+  background: #fff;
+
+
+  & > .library-line {
+    & > * {
+      display: table-cell;
+      vertical-align: middle;
+      overflow: visible;
+      padding: 20px 10px;
+      position: relative;
+    }
+  }
+}

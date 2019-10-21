@@ -1,0 +1,29 @@
+.libraryContainer {
+  &.galleriesList {
+    .library-line {
+      & .createGalleryNow {
+        height: calc(100vh - 155px);
+
+        & > div {
+          text-align: center;
+        }
+
+        & h2 {
+          font-weight: 100;
+          font-size: 24px;
+          margin: 15px 0;
+        }
+      }
+
+      & > * {
+        padding: 30px 10px;
+        border-bottom: 1px solid #d8dadf;
+      }
+    }
+
+  }
+}
+.content-container img {
+  max-width: 100%;
+  height: auto;
+}
