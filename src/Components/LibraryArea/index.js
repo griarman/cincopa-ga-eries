@@ -1,17 +1,21 @@
-import React, { Component } from 'react'
+import React from 'react'
+
 import LibraryHead from './LibraryHead'
 import LibraryContainer from './LibraryContainer'
 import LoadMore from './LoadMore'
-import './libraryArea.scss'
+import MyContext from '../../Context/MyContext'
+import './style.scss'
 
-export default class LibraryArea extends Component {
-  render() {
-    return (
-      <div className='libraryArea galleriesArea loading'>
-        <LibraryHead />
-        <LibraryContainer />
-        <LoadMore />
+const LibraryArea = () => (
+  <MyContext.Consumer>
+    {({ loading }) => (
+      <div className={'libraryArea galleriesArea ' + (loading) ? 'loading' : ''}>
+        <LibraryHead/>
+        <LibraryContainer/>
+        <LoadMore/>
       </div>
-    )
-  }
-}
+    )}
+  </MyContext.Consumer>
+);
+
+export default LibraryArea;

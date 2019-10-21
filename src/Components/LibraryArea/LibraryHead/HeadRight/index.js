@@ -1,4 +1,5 @@
 import React from 'react'
+import './style.scss'
 
 const dorpdownOrders = [
   {
@@ -19,8 +20,7 @@ const dorpdownOrders = [
 
 ];
 
-export default function(props) {
-  return (
+const HeadRight = () => (
     <div className='headRight'>
       <select name="" id="dropdownOrder">
         {dorpdownOrders.map(el => <option value={el.value} key={el.id}>{el.text}</option>)}
@@ -40,6 +40,6 @@ export default function(props) {
         </a>
       </div>
     </div>
-  )
-}
+  );
 
+export default HeadRight;

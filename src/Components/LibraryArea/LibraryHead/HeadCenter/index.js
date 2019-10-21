@@ -6,7 +6,7 @@ import SelectedTag from './SelectedTag'
 
 const HeadCenter = () =>(
   <MyContext.Consumer>
-    {({items_data: { changeSearchTags, searchTags, getGalleriesFromServer} }) => (
+    {({ changeSearchTags, searchTags }) => (
       <div className='headCenter'>
         <span className="cell title"/>
         <div className="tagsFilterBlock">

@@ -1,9 +1,11 @@
-import React from 'react'
+import React, { useState } from 'react'
 
-import './headLeft.scss'
+import './style.scss'
 
-const HeadLeft = () =>
-  (
+const HeadLeft = () => {
+  const [show, setShow] = useState(false);
+  const className = show ? 'show' : '';
+  return (
     <div className='headLeft'>
       <div className='searchBox'>
         <a className='search_img btn trans'>
@@ -13,12 +15,17 @@ const HeadLeft = () =>
           type='text'
           placeholder='Search...'
           className='search_input'
-          onInput={showDelButton}
+          onInput={e => {
+            e.target.value.trim() ?
+              setShow(true) :
+              setShow(false);
+          }}
         />
-        <a onClick={resetInput} className='reset_search'>X</a>
+        <a onClick={resetInput} className={'reset_search ' + className}>X</a>
       </div>
     </div>
-  );
+  )
+};
 
 function resetInput(e) {
   e.preventDefault();
@@ -26,12 +33,6 @@ function resetInput(e) {
 
   searchInput.value = '';
   searchInput.nextSibling.classList.remove('show');
-}
-
-function showDelButton(e) {
-  let resetSearch = document.querySelector('.reset_search');
-  if (e.target.value.trim()) resetSearch.classList.add('show');
-  else resetSearch.classList.remove('show');
 }
 
 export default HeadLeft;

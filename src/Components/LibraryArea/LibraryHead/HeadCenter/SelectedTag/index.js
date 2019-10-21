@@ -9,8 +9,8 @@ const SelectedTag = ({ el: tagName, changeSearchTags, searchTags }) => (
 
 const removeTag = (e, changeSearchTags, searchTags) => {
   e.preventDefault();
-  console.log(e.target);
-  console.log(e.target.parentNode.dataset.val);
+  // console.log(e.target);
+  // console.log(e.target.parentNode.dataset.val);
   changeSearchTags(searchTags.filter(el => el !== e.target.parentNode.dataset.val));
 };
 

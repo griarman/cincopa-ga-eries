@@ -2,11 +2,11 @@ import React from 'react'
 
 import Helpers from '../../libs/helpers'
 import MyContext from '../../Context/MyContext'
-import './librarySideMenu.scss'
+import './style.scss'
 
 const LibrarySideMenu = () => (
   <MyContext.Consumer>
-    {({ items_data: { tag_cloud: tagCloud, changeSearchTags, searchTags } }) => (
+    {({ api_getList: { items_data: { tag_cloud: tagCloud } }, changeSearchTags, searchTags }) => (
         <div id='librarySideMenu'>
           <div className='sideMenuControls'>
             <a href='' className='upload_files btn primary'>
@@ -22,7 +22,7 @@ const LibrarySideMenu = () => (
             </h4>
             <div className='all_tags tagsCloud' id='tagsCloud'>
               <ul>
-                {Object.keys(tagCloud).map(el =>
+                {tagCloud && Object.keys(tagCloud).map(el =>
                   <li
                     key={Helpers.generateRandomNumber()}
                     data-val={el}

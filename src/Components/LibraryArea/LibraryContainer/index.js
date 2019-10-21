@@ -1,5 +1,9 @@
 import React, { Component } from 'react'
+
 import MyContext from '../../../Context/MyContext'
+import Gallery from './Gallery'
+import EmptyContainer from './EmptyContainer'
+import './style.scss'
 
 class LibraryContainer extends Component {
   constructor(props) {
@@ -11,22 +15,25 @@ class LibraryContainer extends Component {
   }
   componentDidMount() {
     this.setState({
-      // folders: this.context.folders,
-      folders: [],
-      initialize: true
+      folders: this.context.foldersWholeData,
+      initialize: true,
     })
   }
 
+
   render() {
     if(!this.state.initialize) return null;
-    // let component = !this.state.folders.length ?
+    const { foldersWholeData: folders } = this.context;
+    let component = !folders.length ? <EmptyContainer/> : <Gallery folders={folders}/>;
     return (
-        <table id='libraryContainer' className='hided libraryContainer galleriesList galleries_list'>
-          {}
-        </table>
+      <table id='libraryContainer' className='hided libraryContainer galleriesList galleries_list'>
+        <tbody>
+        { component }
+        </tbody>
+      </table>
     )
   }
 }
 
-LibraryContainer.contextType = MyContext;
+LibraryContainer.contextType = MyContext.Consumer;
 export default LibraryContainer;
