@@ -12,11 +12,8 @@ class Gallery extends Component {
   }
 
   render() {
-    return (
-      <tbody>
-      {this.state.folders.map(el => <Folder/>)}
-      </tbody>
-      )
+    return  <tbody>{this.state.folders.map(el => <Folder {...el} />)}</tbody>;
+
   }
 
 
