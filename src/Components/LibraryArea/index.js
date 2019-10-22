@@ -9,7 +9,7 @@ import './style.scss'
 const LibraryArea = () => (
   <MyContext.Consumer>
     {({ loading }) => (
-      <div className={'libraryArea galleriesArea ' + (loading) ? 'loading' : ''}>
+      <div className={'libraryArea galleriesArea ' + (!loading) ? 'loading' : ''}>
         <LibraryHead/>
         <LibraryContainer/>
         <LoadMore/>

@@ -1,12 +1,14 @@
 .libraryContainer {
   clear: both;
-  width: 100%;
+  width: calc(100% - 300px);
   display: table;
   table-layout: fixed;
   border-collapse: collapse;
   border: 1px solid #d8dadf;
   border-left: none;
   background: #fff;
+  margin-left: 300px;
+  margin-top: 76px;
 
 
   & > .library-line {

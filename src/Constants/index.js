@@ -119,8 +119,59 @@ export const myApiImitation = {
     runtime: "0",
   }
 };
+
 export const urls = {
   getStatusUrl: "/media-platform/wizard_edit_ajax.aspx",
   getFoldersWithApiUrl: "/media-platform/my-galleries-getlist",
   analyticsUrl: "//analytics.cincopa.com/api_fid.aspx"
 };
+
+export const allActionsBlock = [
+  {
+    rel: 1,
+    className: 'item btn square edit',
+    'data-eventname':'Edit Gallery Click',
+    i: {
+      className: 'icon-gear',
+    },
+    b: {
+      className: 'hint',
+      text: 'Customize Gallery',
+    }
+  },
+  {
+    rel: 8,
+    className: 'item btn square upload',
+    'data-eventname':'Upload Files Click',
+    i: {
+      className: 'icon-upload',
+    },
+    b: {
+      className: 'hint',
+      text: 'Manage &amp; Upload Files',
+    }
+  },
+  {
+    rel: 3,
+    className: 'item btn square embed',
+    i: {
+      className: 'icon-code',
+      'data-eventname': 'Embed Code Click'
+    },
+    b: {
+      className: 'hint',
+      text: 'Customize Gallery',
+    }
+  },
+  {
+    className: 'btn square more',
+    'data-eventname':'icon-more',
+    i: {
+      className: 'icon-more',
+    },
+    b: {
+      className: 'hint',
+      text: 'More Actions',
+    }
+  },
+];

@@ -104,11 +104,17 @@ class AppProvider extends Component {
 
   waitForElement = () => {
     return new Promise(resolve => {
-      if(typeof window['api_getlist'] !== "undefined"){
+      if (typeof window['api_getlist'] !== "undefined") {
        this.setState({
           api_getList: window['api_getlist'].response,
         }, () => resolve());
        return;
+      }
+      else if (window.location.host === 'localhost:3000') {
+        this.setState({
+          api_getList: myApiImitation.response,
+        }, () => resolve());
+        return;
       }
       setTimeout(this.waitForElement, 100);
     })
