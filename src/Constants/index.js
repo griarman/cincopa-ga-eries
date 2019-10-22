@@ -128,6 +128,7 @@ export const urls = {
 
 export const allActionsBlock = [
   {
+    events: 'customize',
     rel: 1,
     className: 'item btn square edit',
     'data-eventname':'Edit Gallery Click',
@@ -140,6 +141,7 @@ export const allActionsBlock = [
     }
   },
   {
+    events: 'manageFiles',
     rel: 8,
     className: 'item btn square upload',
     'data-eventname':'Upload Files Click',
@@ -152,6 +154,7 @@ export const allActionsBlock = [
     }
   },
   {
+    events: 'embed',
     rel: 3,
     className: 'item btn square embed',
     i: {
@@ -164,6 +167,7 @@ export const allActionsBlock = [
     }
   },
   {
+    events: 'showMore',
     className: 'btn square more',
     'data-eventname':'icon-more',
     i: {
@@ -173,5 +177,85 @@ export const allActionsBlock = [
       className: 'hint',
       text: 'More Actions',
     }
+  },
+];
+
+export const DropDownOptions = [
+  {
+    className: 'item' ,
+    rel: 2,
+    a: {
+      'data-eventname':'Gallery Duplicate',
+      i: {
+        className: 'icon-duplicate'
+      },
+      b: {
+        text: 'Duplicate'
+      }
+    },
+  },
+  {
+    className: 'item' ,
+    rel: 4,
+    a: {
+      i: {
+        className: 'icon-sort'
+      },
+      b: {
+        text: 'Text &amp; Reorder'
+      }
+    },
+  },
+  {
+    className: 'item' ,
+    rel: 5,
+    a: {
+      'data-eventname': 'Gallery Resync Click',
+      i: {
+        className: 'icon-resync'
+      },
+      b: {
+        text: 'Resync'
+      }
+    },
+  },
+  {
+    className: 'item' ,
+    rel: 9,
+    a: {
+      i: {
+        'data-eventname': 'Gallery Duplicate Settings Only',
+        className: 'icon-resync'
+      },
+      b: {
+        text: 'Duplicate (Settings only)'
+      }
+    },
+  },
+  {
+    className: 'item' ,
+    rel: 6,
+    a: {
+      i: {
+        'data-eventname': 'Download Gallery Click',
+        className: 'icon-download'
+      },
+      b: {
+        text: 'Download gallery'
+      }
+    },
+  },
+  {
+    className: 'item' ,
+    rel: 7,
+    a: {
+      className: 'delete',
+      i: {
+        className: 'icon-delete'
+      },
+      b: {
+        text: 'Delete gallery'
+      }
+    },
   },
 ];

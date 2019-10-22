@@ -13,13 +13,13 @@ class LibraryContainer extends Component {
       initialize: false,
     }
   }
+
   componentDidMount() {
     this.setState({
       folders: this.context.foldersWholeData,
       initialize: true,
     })
   }
-
 
   render() {
     if(!this.state.initialize) return null;

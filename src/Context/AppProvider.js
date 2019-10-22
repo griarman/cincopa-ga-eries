@@ -58,28 +58,20 @@ class AppProvider extends Component {
   changeSearchTags = newSearchTags => {
     this.setState(prevState => ({
       ...prevState,
-      api_getList: {
-        ...prevState.api_getList,
-        items_data: {
-          ...prevState.api_getList.items_data,
-          searchTags: newSearchTags
-        }
-      }
+      searchTags: newSearchTags
     }));
   };
 
   changeGalleriesFolders = (foldersData, type = 'add') => {
     switch (type) {
       case 'add':
-        this.setState(prevState => (
-          {
+        this.setState(prevState => ({
             ...prevState,
             foldersWholeData: [
               ...prevState.foldersWholeData,
               foldersData
             ]
-          }
-        ));
+          }));
         break;
     }
   };

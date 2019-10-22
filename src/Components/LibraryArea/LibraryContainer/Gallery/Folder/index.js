@@ -1,33 +1,34 @@
-import React from 'react'
+import React, { Fragment } from 'react'
 
 import AllActionsBlock from './AllActionsBlock'
+import ItemNameDesc from './ItemNameDesc'
 import './style.scss'
 
-const Folder = ({fid, did, loaded, imgLoaded, img}) => (
-  [
+const Folder = props => (
+  <Fragment key={props.fid}>
     <tr
-      id={'gallery_' + fid}
-      className={'galleryRow library-line ' + loaded}
-      data-did={did}
-      data-loaded={loaded}
+      id={'gallery_' + props.fid}
+      className={'galleryRow library-line ' + props.loaded}
+      data-did={props.did}
+      data-loaded={props.loaded}
     >
       <td className='galleryThumb landscape'>
         <div className='thumb'>
-          <div className={'img' + imgLoaded}>
-            <a dangerouslySetInnerHTML={{__html: !imgLoaded ? img : '<img src="_cms/design20/images/nothumb.png" alt=""/>'}}/>
+          <div className={'img' + props.imgLoaded}>
+            <a dangerouslySetInnerHTML={{__html: 5 > 1/* kataka, kdzem*/ ? props.img : '<img src="_cms/design20/images/nothumb.png" alt=""/>'}}/>
           </div>
         </div>
         <AllActionsBlock/>
       </td>
-      <td className='item_name_desc'></td>
+      <ItemNameDesc { ...props }/>
       <td className='galleryItems'></td>
       <td className='fastAnalytics galleryStat'></td>
 
-    </tr>,
+    </tr>
     <tr>
 
     </tr>
-  ]
+  </Fragment>
 );
 
 export default Folder;

@@ -1,50 +1,49 @@
-import React from 'react'
+import React, { useState } from 'react'
 
+import { DropDownOptions } from '../../../../../../../Constants'
 import './style.scss'
 
-const DropDown = () => (
-  <div className="itemsDropdown noheader actionsMenu" style="display: none;">
-    <div className="itemsDropdown_items" style="display: none;">
-      <ul className="controls">
-        <li className="item" rel="2">
-          <a data-eventname="Gallery Duplicate">
-            <i className="icon-duplicate"/>
-            <b>Duplicate</b>
-          </a>
-        </li>
-        <li className="item" rel="4">
-          <a>
-            <i className="icon-sort"/>
-            <b>Text &amp; Reorder</b>
-          </a>
-        </li>
-        <li className="item" rel="5">
-          <a data-eventname="Gallery Resync Click">
-            <i className="icon-resync"/>
-            <b>Resync</b>
-          </a>
-        </li>
-        <li className="item" rel="9">
-          <a>
-            <i className="icon-template" data-eventname="Gallery Duplicate Settings Only"/>
-            <b>Duplicate (Settings only)</b>
-          </a>
-        </li>
-        <li className="item" rel="6">
-          <a>
-            <i className="icon-download" data-eventname="Download Gallery Click"/>
-            <b>Download gallery</b>
-          </a>
-        </li>
-        <li className="item" rel="7">
-          <a className="delete">
-            <i className="icon-delete"/>
-            <b>Delete gallery</b>
-          </a>
-        </li>
-      </ul>
+const DropDown = ({ open }) => {
+  const [opened, setOpen] = useState(open ? open : 'none');
+  const mouseEvents = {
+    onMouseEnter : () => {
+      clearTimeout(time);
+      setOpen('block')
+    },
+    onMouseLeave: () => {
+      time = setTimeout(() => setOpen('none'), 1500);
+    }
+  };
+  let time;
+
+  return (
+    <div
+      className='itemsDropdown noheader actionsMenu'
+      style={{display: opened}}
+      { ...mouseEvents }
+    >
+      <div
+        className='itemsDropdown_items'
+        style={{display: opened}}
+        { ...mouseEvents }
+      >
+        <ul className='controls'>
+          { DropDownOptions.map(option => (
+            <li className={option.className} rel={option.rel}>
+              <a data-eventname={option.a['data-eventname'] ? option.a['data-eventname'] : ''}
+                 className={option.a.className ? option.a.className : ''}
+              >
+                <i className={option.a.i.className}
+                   data-eventname={option.a.i['data-eventname'] ? option.a.i['data-eventname'] : ''}
+                />
+                <b>{option.a.b.text}</b>
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
     </div>
-  </div>
-);
+  );
+};
 
 export default DropDown;

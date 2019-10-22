@@ -11,9 +11,14 @@ class Gallery extends Component {
     }
   }
 
+  static getDerivedStateFromProps(nextProps, prevState) {
+    return {
+      folders: nextProps.folders
+    }
+  }
+
   render() {
-    console.log(this.state.folders[0]);
-    return  <div>{this.state.folders.map(folder => <Folder { ...folder }/>)}</div>
+    return  <>{this.state.folders.map(folder => <Folder { ...folder }/>)}</>
   }
 }
 
