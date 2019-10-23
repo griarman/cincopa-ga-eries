@@ -27,18 +27,30 @@ class AppProvider extends Component {
 
   componentDidMount() {
     this.waitForElement().then(() => {
-      this.state.api_getList && this.state.api_getList.folders && this.state.api_getList.folders.forEach(el => {
-        this.getGalleriesFromServer({
-          url: urls.getStatusUrl,
-          method: "POST",
-          cache: false,
-          dataType: 'jsonp',
-          data: {
+      /*this.state.api_getList && this.state.api_getList.folders && */this.state.api_getList.folders.forEach(el => {
+        let promises = [];
+        let firstPromise = new Promise(resolve => {
+          doRequest(urls.getStatusUrl, {
             cmd: 'getstatus',
             fid: el.sysdata.fid
-          },
+          }).then(data => resolve(data));
         });
+
+        let secondPromise = new Promise(resolve => {
+          let options = {
+            m: 'hits-urls',
+            p: 'lw',
+            fid: el.sysdata.did
+          };
+
+          doRequest(urls.analyticsUrl, options).then(data => resolve(data));
+        });
+
+        promises.push(firstPromise);
+        promises.push(secondPromise);
+        Promise.all(promises).then(data => {this.changeGalleriesFolders(data)})
       });
+
       this.setState({
         initialize: true
       });
@@ -76,7 +88,7 @@ class AppProvider extends Component {
     }
   };
 
-  getGalleriesFromServer = (params )=> {
+  getGalleriesFromServer = (params)=> {
     const requireKeys = ['url', 'method'];
     let searchCriterisKeys = {
       disable_editor: true,

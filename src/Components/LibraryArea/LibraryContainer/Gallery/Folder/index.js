@@ -2,30 +2,37 @@ import React, { Fragment } from 'react'
 
 import AllActionsBlock from './AllActionsBlock'
 import ItemNameDesc from './ItemNameDesc'
+import GalleryItems from './GalleryItems'
 import './style.scss'
 
-const Folder = props => (
-  <Fragment key={props.fid}>
+const Folder = ({ folderInfo, folderAnalytics }) => (
+  <Fragment key={folderInfo.fid}>
     <tr
-      id={'gallery_' + props.fid}
-      className={'galleryRow library-line ' + props.loaded}
-      data-did={props.did}
-      data-loaded={props.loaded}
+      id={'gallery_' + folderInfo.fid}
+      className={'galleryRow library-line ' + folderInfo.loaded}
+      data-did={folderInfo.did}
+      data-loaded={folderInfo.loaded}
     >
       <td className='galleryThumb landscape'>
         <div className='thumb'>
-          <div className={'img' + props.imgLoaded}>
-            <a dangerouslySetInnerHTML={{__html: 5 > 1/* kataka, kdzem*/ ? props.img : '<img src="_cms/design20/images/nothumb.png" alt=""/>'}}/>
+          <div className={'img' + folderInfo.imgLoaded}>
+            <a dangerouslySetInnerHTML={{__html: 5 > 1/* kataka, kdzem*/ ? folderInfo.img : '<img src="_cms/design20/images/nothumb.png" alt=""/>'}}/>
           </div>
         </div>
-        <AllActionsBlock/>
+        <AllActionsBlock fid={ folderInfo.fid }
+                         did={ folderInfo.did }
+        />
       </td>
-      <ItemNameDesc { ...props }/>
-      <td className='galleryItems'></td>
+      <ItemNameDesc { ...folderInfo } />
+      <GalleryItems { ...folderAnalytics }
+                    items={ folderInfo.items }
+                    details={ folderInfo.details }
+
+      />
       <td className='fastAnalytics galleryStat'></td>
 
     </tr>
-    <tr>
+    <tr { ...folderAnalytics }>
 
     </tr>
   </Fragment>

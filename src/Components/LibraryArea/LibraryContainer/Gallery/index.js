@@ -18,7 +18,12 @@ class Gallery extends Component {
   }
 
   render() {
-    return  <>{this.state.folders.map(folder => <Folder { ...folder }/>)}</>
+    return  <>
+      {this.state.folders.map(folder =>
+        <Folder folderInfo={folder[0]}
+                folderAnalytics={folder[1]}
+        />)}
+      </>
   }
 }
 

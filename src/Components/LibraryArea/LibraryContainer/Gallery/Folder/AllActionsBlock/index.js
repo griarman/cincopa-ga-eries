@@ -2,17 +2,18 @@ import React, { useState } from 'react'
 
 import DropDown from './DropDown'
 import { allActionsBlock } from '../../../../../../Constants'
+import GalleryEditMenu from '../../../../../../libs/GalleryEditMenu'
 import './style.scss'
 
-const AllActionsBlock = () => {
+const AllActionsBlock = ({ fid, did }) => {
 
   const [dropDownState, setDropDownState] = useState(false);
   const handleEvents = {
     showMore: {
-      onClick: setDropDownState(!dropDownState)
+      onClick: () => setDropDownState(!dropDownState)
     },
     customize: {
-      onClick: () => {}
+      onClick: e => { GalleryEditMenu(e.currentTarget.rel, fid, did) }
     },
     manageFiles: {
       onClick: () => {}

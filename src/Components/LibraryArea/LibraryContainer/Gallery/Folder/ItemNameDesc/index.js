@@ -2,18 +2,18 @@ import React from 'react'
 
 import './style.scss'
 
-const ItemNameDesc = ({ name, description, modified, fid }) => (
-  <td className='iItem_name_desc'>
+const ItemNameDesc = ({ name, description, modified, fid, did }) => (
+  <td className='item_name_desc'>
     <span className='name filename' title={name} style={{display: 'block'}}>
       <span onClick={() => {}}>{name}</span>
       <a className='changeLink btn trans' onClick={() => {}} title='Edit Title'>
         <i className='icon-edit'/>
       </a>
     </span>
-    <div className='changeName' style='display: none;'/>
+    <div className='changeName' style={{display: 'none'}}/>
     <div className='caption' title='no-caption'><i/></div>
     <div className='description edit_desc' title='no-description' data-desc='a gallery'>
-      <i style='padding-right: 36px;'>{description || 'no-description'}</i>
+      <i style={{paddingRight: 36 + 'px'}}>{description || 'no-description'}</i>
       <a className='changeLink btn trans' title='Edit Description'><i className='icon-edit'/></a>
     </div>
     <div className='lastUpdated'>
@@ -22,14 +22,14 @@ const ItemNameDesc = ({ name, description, modified, fid }) => (
     </div>
     <div className='galleryId'>
       <i className='icon-gall_id'/>
-      <div className='galid_div'> Gallery ID: AgOAxkOUud-U</div>
+      <div className='galid_div'> Gallery ID: {did}</div>
     </div>
     <div className='all_tags'>
       <div className='tags'>
         <input name='tags_main'
                value=''
                id='tags1571748801995'
-               style='display: none;'
+               style={{display: 'none'}}
         />
         <div id='tags1571748801995_tagsinput'
              className='tagsinput'
@@ -39,7 +39,7 @@ const ItemNameDesc = ({ name, description, modified, fid }) => (
                height: 100 + '%'
              }}
         >
-          <div id='tags1571748801995_addTag' style='display: none;'>
+          <div id='tags1571748801995_addTag' style={{display: 'none'}}>
             <input id='tags1571748801995_tag' defaultValue='' 
                    data-default='Add new tag'
                    style={{
