@@ -1,15 +1,17 @@
 const  GalleryEditMenu = (action, fid, did) => {
   let settings_only = false,
       path = window.location.pathname,
+      host = 'https://www.cincopa.com/media-platform/',
       hostUrl;
 
   hostUrl =  (path.indexOf('media-platform') === -1) ? '/media-platform/' : '';
-  console.log(action, fid, did, 'customize');
   switch (action) {
     case '0':
       break;
     case '1':
-      window.open(hostUrl + "wizard_style.aspx?fid=" + fid, '_self');
+      // window.open(hostUrl + "wizard_style.aspx?fid=" + fid, '_self');
+      // window.location.href = `${host + hostUrl}wizard_style.aspx?fid=${fid}`;
+      window.location.href = `${host}wizard_style.aspx?fid=${fid}`;
       break;
     case '2':
       // duplicate_gallery(fid, settings_only);

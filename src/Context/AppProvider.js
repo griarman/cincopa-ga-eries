@@ -30,10 +30,12 @@ class AppProvider extends Component {
       /*this.state.api_getList && this.state.api_getList.folders && */this.state.api_getList.folders.forEach(el => {
         let promises = [];
         let firstPromise = new Promise(resolve => {
-          doRequest(urls.getStatusUrl, {
+          let options = {
             cmd: 'getstatus',
             fid: el.sysdata.fid
-          }).then(data => resolve(data));
+          };
+          // let url = window.location.host === 'localhost:3000' ? window.location.href + urls.getStatusUrl : urls.getStatusUrl;
+          doRequest(urls.getStatusUrl, options).then(data => resolve(data));
         });
 
         let secondPromise = new Promise(resolve => {
@@ -42,7 +44,7 @@ class AppProvider extends Component {
             p: 'lw',
             fid: el.sysdata.did
           };
-
+          // let url = window.location.host === 'localhost:3000' ? window.location.href + urls.analyticsUrl : urls.analyticsUrl;
           doRequest(urls.analyticsUrl, options).then(data => resolve(data));
         });
 

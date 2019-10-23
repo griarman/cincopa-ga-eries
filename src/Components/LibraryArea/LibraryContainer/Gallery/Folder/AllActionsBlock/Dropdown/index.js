@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 
+import GalleryEditMenu from '../../../../../../../libs/GalleryEditMenu'
 import { DropDownOptions } from '../../../../../../../Constants'
 import './style.scss'
 
