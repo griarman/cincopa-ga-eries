@@ -3,6 +3,7 @@ import React, { Fragment } from 'react'
 import AllActionsBlock from './AllActionsBlock'
 import ItemNameDesc from './ItemNameDesc'
 import GalleryItems from './GalleryItems'
+import FastAnalytics from './FastAnalytics'
 import './style.scss'
 
 const Folder = ({ folderInfo, folderAnalytics }) => (
@@ -29,7 +30,7 @@ const Folder = ({ folderInfo, folderAnalytics }) => (
                     details={ folderInfo.details }
 
       />
-      <td className='fastAnalytics galleryStat'></td>
+      <FastAnalytics { ...folderAnalytics }/>
 
     </tr>
     <tr { ...folderAnalytics }>

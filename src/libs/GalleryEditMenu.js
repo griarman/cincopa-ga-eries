@@ -1,7 +1,7 @@
 const  GalleryEditMenu = (action, fid, did) => {
   let settings_only = false,
       path = window.location.pathname,
-      host = 'https://www.cincopa.com/media-platform/',
+      host = 'https://www.cincopa.com',
       hostUrl;
 
   hostUrl =  (path.indexOf('media-platform') === -1) ? '/media-platform/' : '';
@@ -10,14 +10,15 @@ const  GalleryEditMenu = (action, fid, did) => {
       break;
     case '1':
       // window.open(hostUrl + "wizard_style.aspx?fid=" + fid, '_self');
-      // window.location.href = `${host + hostUrl}wizard_style.aspx?fid=${fid}`;
-      window.location.href = `${host}wizard_style.aspx?fid=${fid}`;
+      window.location.href = `${host + hostUrl}wizard_style.aspx?fid=${fid}`;
       break;
     case '2':
       // duplicate_gallery(fid, settings_only);
       break;
     case '3':
-      window.open(hostUrl + "wizard_gettag.aspx?fid=" + fid, '_self');
+      // window.open(hostUrl + "wizard_gettag.aspx?fid=" + fid, '_self');
+      console.log(hostUrl)
+      window.location.href = `${host + (hostUrl ? hostUrl : '/')}wizard_gettag.aspx?fid= ${fid}`;
       break;
     case '4':
       window.open(hostUrl + "upload-files?fid=" + fid, '_self');
@@ -36,7 +37,8 @@ const  GalleryEditMenu = (action, fid, did) => {
       // delete_folder(fid);
       break;
     case '8':
-      window.open("/media-platform/upload-files?fid=" + fid + "&continue=" + encodeURIComponent(window.location.pathname + "?msg=You have added items to - " + did), '_self');
+      // window.open("/media-platform/upload-files?fid=" + fid + "&continue=" + encodeURIComponent(window.location.pathname + "?msg=You have added items to - " + did), '_self');
+      window.location.href = `${host}/media-platform/upload-files?fid=${fid}&continue=${encodeURIComponent(window.location.pathname + "?msg=You have added items to - " + did)}`;
       break;
     case '9':
       // window.open(hostUrl + "wizard_style.aspx?fid=new&defskin=" + did, '_self');

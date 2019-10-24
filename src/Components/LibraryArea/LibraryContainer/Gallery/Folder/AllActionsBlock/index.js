@@ -10,16 +10,23 @@ const AllActionsBlock = ({ fid, did }) => {
   const [dropDownState, setDropDownState] = useState(false);
   const handleEvents = {
     showMore: {
-      onClick: () => setDropDownState(!dropDownState)
+      onClick: () => { setDropDownState(!dropDownState) },
+      onMouseLeave: () => {
+        if (dropDownState) {
+          setTimeout(() => {
+            setDropDownState(false);
+          }, 700);
+        }
+      }
     },
     customize: {
       onClick: e => { GalleryEditMenu(e.currentTarget.rel, fid, did) }
     },
     manageFiles: {
-      onClick: () => {}
+      onClick: e => { GalleryEditMenu(e.currentTarget.rel, fid, did) }
     },
     embed: {
-      onClick: () => {}
+      onClick: e => { GalleryEditMenu(e.currentTarget.rel, fid, did) }
     }
   };
 
@@ -31,6 +38,7 @@ return (
             data-eventname={action['data-eventname'] ? action['data-eventname'] : ''}
             rel={action.rel ? action.rel : ''}
             {...handleEvents[action.events]}
+
           >
             <i className={action.i.className}
                data-eventname={action.i['data-eventname'] ? action.i['data-eventname'] : ''}

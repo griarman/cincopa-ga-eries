@@ -1,22 +1,28 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 
 import GalleryEditMenu from '../../../../../../../libs/GalleryEditMenu'
 import { DropDownOptions } from '../../../../../../../Constants'
 import './style.scss'
 
 const DropDown = ({ open }) => {
-  const [opened, setOpen] = useState(open ? open : 'none');
+  const [opened, setOpen] = useState(open ? 'block ': 'none');
   const mouseEvents = {
     onMouseEnter : () => {
       clearTimeout(time);
       setOpen('block')
     },
     onMouseLeave: () => {
-      time = setTimeout(() => setOpen('none'), 1500);
+      time = setTimeout(() => { setOpen('none') }, 700);
     }
   };
   let time;
 
+  useEffect(()=> {
+    setOpen(open ? 'block ': 'none');
+  });
+
+  
+  
   return (
     <div
       className='itemsDropdown noheader actionsMenu'

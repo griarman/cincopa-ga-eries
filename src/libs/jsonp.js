@@ -1,6 +1,6 @@
-import Helpers from "./helpers";
+import Helpers from './helpers';
 
-const doRequest = (origin, params) => {
+const jsonpRequest = (origin, params) => {
   return new Promise((resolve, reject) => {
     let query = '?';
     const callbackName = `JQuery${Helpers.getRandomString()}`;
@@ -23,4 +23,4 @@ const doRequest = (origin, params) => {
   })
 };
 
-export default doRequest;
+export default jsonpRequest;
