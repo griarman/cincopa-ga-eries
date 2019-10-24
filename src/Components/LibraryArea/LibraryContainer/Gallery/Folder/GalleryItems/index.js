@@ -8,25 +8,21 @@ const GalleryItems = props => {
 
   const { days, items, hits } = props;
   const [domainState, setDomainState] = useState(false);
-  let domains = 0, domainsList;
+  let domainsList;
 
-  days.forEach(el => {
-    domains += el.urls.length
-  });
+  let domains = days.reduce((sum, el) => sum + el.urls.length, 0);
 
-  domainsList = days.reduce((list, { urls }) => {
-    if (!urls.length) return list;
-    list.push(...urls);
-    return list;
-  }, []);
+  domainsList = days.flatMap(({ urls }) => urls);
 
   const uniqueDomainsList = !domainsList.length ? [] : domainsList.reduce((list, item) => {
     if (!list.length) {
       list.push(item);
       return list;
     }
-    let newList;
-    ((newList = list.findIndex(el => el.url === item.url)) === -1) ? list.push(item) : list[newList].hits += item.hits;
+    const newList = list.findIndex(el => el.url === item.url);
+
+    if (newList === -1) list.push(item);
+    else list[newList].hits += item.hits;
 
     return list;
   }, []);
