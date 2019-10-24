@@ -16,6 +16,15 @@ class Helpers {
       :
       Math.ceil(intPoint) + '<small>' + s[e] + '</small>';
   }
+
+  static extractHostname(url) {
+    let hostname = url.indexOf("//") > -1 ?  url.split('/')[2] : url.split('/')[0];
+
+    hostname = hostname.split(':')[0];
+    hostname = hostname.split('?')[0];
+
+    return hostname;
+  }
 }
 
 export default Helpers;

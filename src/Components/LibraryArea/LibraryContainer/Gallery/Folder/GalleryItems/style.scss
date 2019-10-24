@@ -1,0 +1,21 @@
+.domainsList {
+  &.itemsDropdown {
+    display: block!important;
+    overflow: hidden;
+    border: 0;
+    &, & > div {
+      transition: all .5s linear;
+      height: 0;
+    }
+    &.openedList {
+      border: 1px solid #d8dadf;
+      &, & > div {
+        height: auto;
+
+      }
+    }
+  }
+  & .itemsDropdown_items {
+    margin-left: 0!important;
+  }
+}

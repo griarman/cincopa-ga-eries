@@ -2,7 +2,7 @@ import React from 'react'
 
 import './style.scss'
 
-const ItemNameDesc = ({ name, description, modified, fid, did }) => (
+const ItemNameDesc = ({ name, description, modified, fid, did, tags }) => (
   <td className='item_name_desc'>
     <span className='name filename' title={name} style={{display: 'block'}}>
       <span onClick={() => {}}>{name}</span>
@@ -18,7 +18,7 @@ const ItemNameDesc = ({ name, description, modified, fid, did }) => (
     </div>
     <div className='lastUpdated'>
       <i className='icon-clock'/>
-      <div className='date_div'> Last Updated: {modified}</div>
+      <div className='date_div'> Last Updated: {modified.split(' ')[0]}</div>
     </div>
     <div className='galleryId'>
       <i className='icon-gall_id'/>
@@ -27,7 +27,7 @@ const ItemNameDesc = ({ name, description, modified, fid, did }) => (
     <div className='all_tags'>
       <div className='tags'>
         <input name='tags_main'
-               value=''
+               value={tags}
                id='tags1571748801995'
                style={{display: 'none'}}
         />
@@ -39,6 +39,12 @@ const ItemNameDesc = ({ name, description, modified, fid, did }) => (
                height: 100 + '%'
              }}
         >
+          {tags && tags.split(',').map(tag =>
+            <span className='tag'>
+              <span>{tag}</span>
+              <a title="Removing tag" className="removeTag" href="javascript:void(0)">x</a>
+            </span>
+          )}
           <div id='tags1571748801995_addTag' style={{display: 'none'}}>
             <input id='tags1571748801995_tag' defaultValue='' 
                    data-default='Add new tag'

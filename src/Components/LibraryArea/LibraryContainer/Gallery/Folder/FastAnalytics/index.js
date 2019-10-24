@@ -1,8 +1,15 @@
 import React from 'react'
+// import ReactHighcharts from 'react-highcharts'
 
-const FastAnalytics = ({ hits }) => (
+const FastAnalytics = ({ hits, days }) => {
+  const categoriesDates = days.map(day => day.date);
+  console.log(categoriesDates);
+
+  return (
   <td className='fastAnalytics galleryStat'>
-    <div></div>
+    <div className='chart'>
+      {/*<ReactHighcharts config={}/>*/}
+    </div>
     <div className='totalInfo'>
       <div className='statItem traffic'>
         <div>
@@ -24,6 +31,6 @@ const FastAnalytics = ({ hits }) => (
       </div>
     </div>
   </td>
-);
+)};
 
 export default FastAnalytics;
