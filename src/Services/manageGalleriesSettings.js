@@ -18,18 +18,23 @@ class ManageGalleriesSettings {
   }
 
   static changeGalleryName(fid, name) {
-    const hostUrl = path.indexOf('media-platform') === -1 ? '/media-platform/' : '';
-    let url = hostUrl + "wizard_edit_ajax.aspx?cmd=setfoldername&fid=" + fid + "&newname=" + name;
+    const hostUrl = window.location.hostname.indexOf('media-platform') === -1 ? '/media-platform/' : '';
+    let url = hostUrl + "wizard_edit_ajax.aspx?cmd=setfoldername&fid=" + fid + "&newname=" + name + "callback=JQuery_" + Helpers.getRandomString();
     window['sendEventToGTM']("Gallery Meta", "Title Change", "", true);
-    window['AjaxGetData'](url);
+    // return window['AjaxGetData'](url);
+    return createRequest({ url }, 'jsonp');
+
   }
 
   static setTags(fid, tags) {
-    return jsonpRequest(urls.getStatusUrl, {
-      fid,
-      tags,
-      cmd: 'setfoldertags',
-    });
+    return createRequest({
+      url: urls.getStatusUrl,
+      data: {
+        fid,
+        tags,
+        cmd: 'setfoldertags',
+      },
+    }, 'jsonp');
   }
 }
 

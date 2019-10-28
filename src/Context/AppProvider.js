@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 
 import { myApiImitation, urls } from '../Constants';
-import Helpers from '../libs/helpers';
 import MyContext from './MyContext';
 import CreateRequest from '../Services/createRequest';
 import ManageGalleriesSettings from "../Services/manageGalleriesSettings";
@@ -25,6 +24,7 @@ class AppProvider extends Component {
       initialize: false,
       loading: true,
     };
+
     this.elementsLoading = null;
     this.timer = 0;
   }
@@ -48,7 +48,7 @@ class AppProvider extends Component {
     await this.elementsLoading;
     const firstFiveGalleries = this.state.api_getList.folders.splice(0, 5);
     return Promise.all(
-    firstFiveGalleries.map(el => this.getGallery(el, 'add'))
+    firstFiveGalleries.map(el => this.getGallery(el, type))
     /*async el => {
         const getStatuses = (() => {
           const options = {
@@ -89,13 +89,8 @@ class AppProvider extends Component {
   }
 
   render() {
-    // if(!this.state.initialize) return (
-    //   <div>
-    //     <img src="/public/icons/loading.jpg" alt=""/>
-    //   </div>
-    // );
     if(!this.state.initialize) return null;
-    console.log(this.state.foldersWholeData);
+
     return (
       <MyContext.Provider value={this.state}>
         {this.props.children}

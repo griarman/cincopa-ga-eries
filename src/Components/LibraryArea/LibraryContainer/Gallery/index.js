@@ -22,6 +22,7 @@ class Gallery extends Component {
       {this.state.folders.map(folder =>
         <Folder folderInfo={folder[0]}
                 folderAnalytics={folder[1]}
+                ManageGalleriesSettings={this.state.ManageGalleriesSettings}
         />)}
       </>
   }
