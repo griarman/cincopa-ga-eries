@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
-import axios from 'axios';
 
 import { myApiImitation, urls } from '../Constants';
+import Helpers from '../libs/helpers';
 import MyContext from './MyContext';
-import jsonpRequest from '../libs/jsonp';
+import CreateRequest from '../Services/createRequest';
+import ManageGalleriesSettings from "../Services/manageGalleriesSettings";
+
 
 class AppProvider extends Component {
   constructor(props) {
@@ -17,7 +19,7 @@ class AppProvider extends Component {
         runtime: 0,
       },
       changeSearchTags: this.changeSearchTags,
-      getGalleriesFromServer: this.getGalleriesFromServer,
+      ManageGalleriesSettings: ManageGalleriesSettings,
       searchTags: [],
       foldersWholeData: [],
       initialize: false,
@@ -33,37 +35,48 @@ class AppProvider extends Component {
     this.setState({
       initialize: true,
     });
+
+    window.addEventListener('scroll', this.lazyLoad);
   }
 
   componentWillUnmount() {
     clearTimeout(this.timer);
+    window.removeEventListener('scroll', this.lazyLoad);
   }
 
   async fetchData(type) {
     await this.elementsLoading;
+    const firstFiveGalleries = this.state.api_getList.folders.splice(0, 5);
     return Promise.all(
-      this.state.api_getList.folders.map(async el => {
+    firstFiveGalleries.map(el => this.getGallery(el, 'add'))
+    /*async el => {
         const getStatuses = (() => {
           const options = {
-            cmd: 'getstatus',
-            fid: el.sysdata.fid
+            url: urls.getStatusUrl,
+            data: {
+              cmd: 'getstatus',
+              fid: el.sysdata.fid,
+            },
           };
           // let url = window.location.host === 'localhost:3000' ? window.location.href + urls.getStatusUrl : urls.getStatusUrl;
-          return jsonpRequest(urls.getStatusUrl, options);
+          return CreateRequest(options, 'jsonp');
         })();
 
         const getHitData = (() => {
           const options = {
-            m: 'hits-urls',
-            p: 'lw',
-            fid: el.sysdata.did
+            url: urls.analyticsUrl,
+            data: {
+              m: 'hits-urls',
+              p: 'lw',
+              fid: el.sysdata.did
+            },
           };
           // let url = window.location.host === 'localhost:3000' ? window.location.href + urls.analyticsUrl : urls.analyticsUrl;
-          return jsonpRequest(urls.analyticsUrl, options);
+          return CreateRequest(options, 'jsonp');
         })();
-        const getTraffic = axios({
+        const getTraffic = CreateRequest({
           url: "//www.cincopa.com/media-platform/api/redis?disable_editor=y&cmd=topfid&stats=fid-traffic-stats&end=-1"
-        }).then(({ data }) => data);
+        }, 'ajax').then(({ data }) => data);
 
         const data = await Promise.all([
           getStatuses,
@@ -71,13 +84,18 @@ class AppProvider extends Component {
           getTraffic,
         ]);
         this.changeGalleriesFolders(data, type);
-      })
+      }*/
     );
   }
 
   render() {
+    // if(!this.state.initialize) return (
+    //   <div>
+    //     <img src="/public/icons/loading.jpg" alt=""/>
+    //   </div>
+    // );
     if(!this.state.initialize) return null;
-
+    console.log(this.state.foldersWholeData);
     return (
       <MyContext.Provider value={this.state}>
         {this.props.children}
@@ -103,25 +121,48 @@ class AppProvider extends Component {
             ]
           }));
         break;
+      case 'update':
+        break;
+      case 'delete':
+        break;
     }
   };
 
-  getGalleriesFromServer = (params)=> {
-    const requireKeys = ['url', 'method'];
-    let searchCriterisKeys = {
-      disable_editor: true,
-      orderby: '',
-      orderbylist: '',
-      page: 1,
-      per_page: 50,
-      search: '',
-      tags: '',
-    };
-    // if (requireKeys.every(el => Object.keys(params).includes(el))) {}
+  getGallery = async (el, type) => {
+    const getStatuses = (() => {
+      const options = {
+        url: urls.getStatusUrl,
+        data: {
+          cmd: 'getstatus',
+          fid: el.sysdata.fid,
+        },
+      };
+      // let url = window.location.host === 'localhost:3000' ? window.location.href + urls.getStatusUrl : urls.getStatusUrl;
+      return CreateRequest(options, 'jsonp');
+    })();
 
-   jsonpRequest(params.url, params.data).then(data => {
-      this.changeGalleriesFolders(data);
-    });
+    const getHitData = (() => {
+      const options = {
+        url: urls.analyticsUrl,
+        data: {
+          m: 'hits-urls',
+          p: 'lw',
+          fid: el.sysdata.did
+        },
+      };
+      // let url = window.location.host === 'localhost:3000' ? window.location.href + urls.analyticsUrl : urls.analyticsUrl;
+      return CreateRequest(options, 'jsonp');
+    })();
+    const getTraffic = CreateRequest({
+      url: "//www.cincopa.com/media-platform/api/redis?disable_editor=y&cmd=topfid&stats=fid-traffic-stats&end=-1"
+    }, 'ajax').then(({ data }) => data);
+
+    const data = await Promise.all([
+      getStatuses,
+      getHitData,
+      getTraffic,
+    ]);
+    this.changeGalleriesFolders(data, type);
   };
 
   waitForElement = () => {
@@ -138,6 +179,15 @@ class AppProvider extends Component {
       }
       this.timer = setTimeout(this.waitForElement, 100);
     });
+  };
+
+  lazyLoad = () => {
+    if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight) {
+      const nextGallery = this.state.api_getList.folders.splice(0, 1)[0];
+
+      if (nextGallery) this.getGallery(nextGallery, 'add');
+
+    }
   }
 }
 

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 
-import GalleryEditMenu from '../../../../../../../libs/GalleryEditMenu'
+import GalleryEditMenu from '../../../../../../../Services/GalleryEditMenu'
 import { DropDownOptions } from '../../../../../../../Constants'
 import './style.scss'
 

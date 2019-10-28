@@ -1,5 +1,6 @@
 import React, { Fragment } from 'react'
 
+import GalleryEditMenu from '../../../../../Services/GalleryEditMenu'
 import AllActionsBlock from './AllActionsBlock'
 import ItemNameDesc from './ItemNameDesc'
 import GalleryItems from './GalleryItems'
@@ -15,9 +16,13 @@ const Folder = ({ folderInfo, folderAnalytics }) => (
       data-loaded={folderInfo.loaded}
     >
       <td className='galleryThumb landscape'>
-        <div className='thumb'>
+        <div
+          rel='15'
+          className='thumb'
+          onClick={e => { GalleryEditMenu(e.currentTarget.rel, folderInfo.fid, folderInfo.did) }}>
           <div className={'img' + folderInfo.imgLoaded}>
-            <a dangerouslySetInnerHTML={{__html: 5 > 1/* kataka, kdzem*/ ? folderInfo.img : '<img src="_cms/design20/images/nothumb.png" alt=""/>'}}/>
+            <a dangerouslySetInnerHTML={{__html: 5 > 1/* kataka, kdzem*/ ? folderInfo.img : '<img src="_cms/design20/images/nothumb.png" ' +'alt=""/>'}}
+            />
           </div>
         </div>
         <AllActionsBlock fid={ folderInfo.fid }

@@ -27,7 +27,7 @@ const GalleryItems = props => {
     return list;
   }, []);
 
-  console.log(uniqueDomainsList);
+  // console.log(uniqueDomainsList);
 
   // useEffect(() => {
   //   if(domainState) document.addEventListener('click', close);

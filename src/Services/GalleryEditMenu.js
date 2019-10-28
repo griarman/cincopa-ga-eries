@@ -1,10 +1,10 @@
-const  GalleryEditMenu = (action, fid, did) => {
+const GalleryEditMenu = (action, fid, did) => {
   let settings_only = false,
       path = window.location.pathname,
       host = 'https://www.cincopa.com',
       hostUrl;
 
-  hostUrl =  (path.indexOf('media-platform') === -1) ? '/media-platform/' : '';
+  hostUrl = '/media-platform/';
   switch (action) {
     case '0':
       break;
@@ -17,8 +17,9 @@ const  GalleryEditMenu = (action, fid, did) => {
       break;
     case '3':
       // window.open(hostUrl + "wizard_gettag.aspx?fid=" + fid, '_self');
-      console.log(hostUrl)
-      window.location.href = `${host + (hostUrl ? hostUrl : '/')}wizard_gettag.aspx?fid= ${fid}`;
+      // console.log(hostUrl);
+      // console.log(window.location.pathname);
+      window.location.href = `${host + hostUrl}wizard_gettag.aspx?fid= ${fid}`;
       break;
     case '4':
       window.open(hostUrl + "upload-files?fid=" + fid, '_self');
@@ -73,6 +74,8 @@ const  GalleryEditMenu = (action, fid, did) => {
         window.close()
       }
       break;*/
+    case '15':
+      window.location.href = `https://www.cincopa.com/media-platform/test?fid=${did}`;
   }
 };
 

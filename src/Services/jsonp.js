@@ -1,9 +1,9 @@
-import Helpers from './helpers';
+import Helpers from '../libs/helpers';
 
 const jsonpRequest = (origin, params) => {
   return new Promise((resolve, reject) => {
     let query = '?';
-    const callbackName = `JQuery${Helpers.getRandomString()}`;
+    const callbackName = `JQuery_${Helpers.getRandomString()}`;
 
     Object.entries(params).forEach(([key, value]) => {
       query += `${key}=${encodeURIComponent(value)}&`;

@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 
 import DropDown from './DropDown'
 import { allActionsBlock } from '../../../../../../Constants'
-import GalleryEditMenu from '../../../../../../libs/GalleryEditMenu'
+import GalleryEditMenu from '../../../../../../Services/GalleryEditMenu'
 import './style.scss'
 
 const AllActionsBlock = ({ fid, did }) => {
@@ -38,7 +38,6 @@ return (
             data-eventname={action['data-eventname'] ? action['data-eventname'] : ''}
             rel={action.rel ? action.rel : ''}
             {...handleEvents[action.events]}
-
           >
             <i className={action.i.className}
                data-eventname={action.i['data-eventname'] ? action.i['data-eventname'] : ''}

@@ -1,8 +1,9 @@
-import React, { useState } from 'react'
+import React, { useState, useRef } from 'react'
 
 import './style.scss'
 
 const HeadLeft = () => {
+  const searchInput = useRef(null);
   const [show, setShow] = useState(false);
   const className = show ? 'show' : '';
   return (
@@ -12,6 +13,7 @@ const HeadLeft = () => {
           <i className='icon-search'/>
         </a>
         <input
+          ref={searchInput}
           type='text'
           placeholder='Search...'
           className='search_input'
@@ -21,7 +23,10 @@ const HeadLeft = () => {
               setShow(false);
           }}
         />
-        <a onClick={resetInput} className={'reset_search ' + className}>X</a>
+        <a onClick={() => {
+          searchInput.current.value = '';
+          setShow(false);
+        }} className={'reset_search ' + className}>X</a>
       </div>
     </div>
   )
