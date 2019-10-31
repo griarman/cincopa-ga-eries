@@ -2,22 +2,19 @@ import axios from 'axios'
 
 import jsonpRequest from './jsonp'
 
-function CreateRequest(params, type = 'ajax') {
-
+function CreateRequest(type = 'ajax', params) {
   try {
     const { status, message } = checkValid(params, type);
     if(!status) throw new Error(message);
 
-    const { url } = params;
-    const data = params.hasOwnProperty('data') ? params.data : {};
+    const { url, data = {}, callbackName = null } = params;
 
     switch (type) {
       case 'jsonp':
-        return jsonpRequest(url, data);
+        return jsonpRequest(url, data, callbackName);
       case 'ajax':
         const { axiosStatus, axiosMessage } = checkAxiosSettings(params);
         if(!axiosStatus) throw new Error(axiosMessage);
-        // params.headers = { "Access-Control-Allow-Origin": "*" };
         return axios(params);
     }
   }

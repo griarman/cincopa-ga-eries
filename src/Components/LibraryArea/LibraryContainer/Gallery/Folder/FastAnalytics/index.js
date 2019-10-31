@@ -27,9 +27,10 @@ const FastAnalytics = ({ hits, days }) => {
         labels: {
         formatter: function () {
           //return Highcharts.dateFormat('%d/%m', this.value); //original code
-          /*let dateVal = new Date(this.value);
-          dateVal = dateVal.setDate(dateVal.getDate() + 1);//needed for safari browser & add + one day (not sure why but start from -1 day)
-          return Highcharts.dateFormat('%d/%m', dateVal);*/
+          let dateVal = new Date(this.value);
+          dateVal = dateVal.setDate(dateVal.getDate() + 1);//needed for safari browser & add + one day (not sure why but start from -1 day);
+          let myDate = new Date(dateVal);
+          return `${myDate.getDate()}/${myDate.getMonth() + 1}`;
         }
       }
     },
@@ -50,13 +51,13 @@ const FastAnalytics = ({ hits, days }) => {
         color: '#7d67ae',
         useHTML: true,
         formatter: function (timestamp) {
-        /*let d = new Date(this.x);
+        let d = new Date(this.x);
         let s = '';
-        s += '<b style="color: ' + this.points[0].series.color + ';">' + this.x + '</b> ';
-        $.each(this.points, function (i, point) {
-          s += '<b style="color: ' + point.series.color + ';">' + point.series.name + ': ' + point.y + '</b>';
+        s += `<b style="color: ${this.points[0].series.color};">${this.x}</b>`;
+        this.points.forEach( function (point, i) {
+          s += `<b style="color: ${point.series.color};">${point.series.name}: ${point.y}</b>`;
         });
-        return s;*/
+        return s;
       },
       shared: true
     },
@@ -88,7 +89,7 @@ const FastAnalytics = ({ hits, days }) => {
 
   return (
   <td className='fastAnalytics galleryStat'>
-      {/*<ReactHighcharts config={config} />*/}
+      <ReactHighcharts config={config} />
     <div className='totalInfo'>
       <div className='statItem traffic'>
         <div>

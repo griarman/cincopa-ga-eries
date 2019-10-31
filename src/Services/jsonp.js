@@ -1,15 +1,13 @@
 import Helpers from '../libs/helpers';
 
-const jsonpRequest = (origin, params) => {
+const jsonpRequest = (origin, params, callbackName = null) => {
   return new Promise((resolve, reject) => {
-    let query = '?';
-    const callbackName = `JQuery_${Helpers.getRandomString()}`;
+    callbackName = callbackName || `callback_${Helpers.getRandomString()}`;
+    let query = `?callback=${callbackName}`;
 
     Object.entries(params).forEach(([key, value]) => {
-      query += `${key}=${encodeURIComponent(value)}&`;
+      query += `&${key}=${encodeURIComponent(value)}`;
     });
-
-    query += `callback=${callbackName}`;
 
     const script = document.createElement('script');
     script.src = `${origin}${query}`;
@@ -20,7 +18,7 @@ const jsonpRequest = (origin, params) => {
       resolve(res);
     };
     document.body.appendChild(script);
-  })
+  });
 };
 
 export default jsonpRequest;

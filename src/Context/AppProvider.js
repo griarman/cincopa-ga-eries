@@ -46,7 +46,7 @@ class AppProvider extends Component {
 
   async fetchData(type) {
     await this.elementsLoading;
-    const firstFiveGalleries = this.state.api_getList.folders.splice(0, 5);
+    const firstFiveGalleries = this.state.api_getList.folders.splice(0);
     return Promise.all(
     firstFiveGalleries.map(el => this.getGallery(el, type))
     /*async el => {
@@ -59,7 +59,7 @@ class AppProvider extends Component {
             },
           };
           // let url = window.location.host === 'localhost:3000' ? window.location.href + urls.getStatusUrl : urls.getStatusUrl;
-          return CreateRequest(options, 'jsonp');
+          return CreateRequest('jsonp', options);
         })();
 
         const getHitData = (() => {
@@ -72,11 +72,11 @@ class AppProvider extends Component {
             },
           };
           // let url = window.location.host === 'localhost:3000' ? window.location.href + urls.analyticsUrl : urls.analyticsUrl;
-          return CreateRequest(options, 'jsonp');
+          return CreateRequest('jsonp', options);
         })();
-        const getTraffic = CreateRequest({
+        const getTraffic = CreateRequest('ajax', {
           url: "//www.cincopa.com/media-platform/api/redis?disable_editor=y&cmd=topfid&stats=fid-traffic-stats&end=-1"
-        }, 'ajax').then(({ data }) => data);
+        }).then(({ data }) => data);
 
         const data = await Promise.all([
           getStatuses,
@@ -133,7 +133,7 @@ class AppProvider extends Component {
         },
       };
       // let url = window.location.host === 'localhost:3000' ? window.location.href + urls.getStatusUrl : urls.getStatusUrl;
-      return CreateRequest(options, 'jsonp');
+      return CreateRequest('jsonp', options);
     })();
 
     const getHitData = (() => {
@@ -146,11 +146,11 @@ class AppProvider extends Component {
         },
       };
       // let url = window.location.host === 'localhost:3000' ? window.location.href + urls.analyticsUrl : urls.analyticsUrl;
-      return CreateRequest(options, 'jsonp');
+      return CreateRequest('jsonp', options);
     })();
-    const getTraffic = CreateRequest({
+    const getTraffic = CreateRequest('ajax', {
       url: "//www.cincopa.com/media-platform/api/redis?disable_editor=y&cmd=topfid&stats=fid-traffic-stats&end=-1"
-    }, 'ajax').then(({ data }) => data);
+    }).then(({ data }) => data);
 
     const data = await Promise.all([
       getStatuses,

@@ -8,6 +8,8 @@ class ItemNameDesc extends Component {
     super(props);
 
     this.nameRef = React.createRef(null);
+    this.newName = React.createRef(null);
+    this.newDesc = React.createRef(null);
     this.descRef = React.createRef(null);
 
     this.state = {
@@ -30,7 +32,7 @@ class ItemNameDesc extends Component {
             this.setState({ nameChanger: this.state.nameChanger.reverse() })
           }}
         >
-          <span>{name}</span>
+          <span ref={this.newName}>{name}</span>
           <a className='changeLink btn trans' title='Edit Title'>
             <i className='icon-edit'/>
           </a>
@@ -39,15 +41,15 @@ class ItemNameDesc extends Component {
           <form id="changeName" onSubmit={e => this.changeName(e, fid)}>
             <input name="changeName" type="text" defaultValue={name} ref={this.nameRef}/>
             <div>
-              <a href="javascript:void(0)" onClick={() => {
+              <a href="javascript:void(0)" onClick={async () => {
                 let newName = this.nameRef.current.value.trim();
                 if (!newName) {
                   this.cancelNameChange();
                   return;
                 }
-                ManageGalleriesSettings.changeGalleryName(fid, newName).then(data => {
-                  this.cancelNameChange();
-                });
+                const data = await ManageGalleriesSettings.changeGalleryName(fid, newName);
+                this.newName.current.innerText = data.name;
+                this.cancelNameChange();
               }}>Save</a>
               <a href="javascript:void(0)" onClick={this.cancelNameChange}>Cancel</a>
             </div>
@@ -73,16 +75,16 @@ class ItemNameDesc extends Component {
             placeholder="Gallery Description">{description || 'no-description'}
           </textarea>
           <div className="save_cancel_box" style={{display: this.state.descChanger[0]}}>
-            <a href="javascript:void(0)" onClick={() => {
+            <a href="javascript:void(0)" onClick={async () => {
               let newDesc = this.descRef.current.value.trim();
               if (!newDesc) {
                 this.cancelNameChange();
                 return;
               }
-              ManageGalleriesSettings.saveNewDesc(fid, newDesc).then(data => {
-                console.log(data);
-                this.cancelDescChange();
-              })
+              const newDescData = await ManageGalleriesSettings.saveNewDesc(fid, newDesc);
+              this.newDesc.current.innerText = newDescData.description;
+              this.cancelDescChange();
+
             }}>Save</a>
             <a href="javascript:void(0)" onClick={this.cancelDescChange}>Cancel</a>
           </div>
