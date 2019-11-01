@@ -46,7 +46,7 @@ class AppProvider extends Component {
 
   async fetchData(type) {
     await this.elementsLoading;
-    const firstFiveGalleries = this.state.api_getList.folders.splice(0);
+    const firstFiveGalleries = this.state.api_getList.folders.splice(0, 5);
     return Promise.all(
     firstFiveGalleries.map(el => this.getGallery(el, type))
     /*async el => {
@@ -179,7 +179,7 @@ class AppProvider extends Component {
   lazyLoad = () => {
     if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight) {
       const nextGallery = this.state.api_getList.folders.splice(0, 1)[0];
-
+      console.log(1234);
       if (nextGallery) this.getGallery(nextGallery, 'add');
 
     }

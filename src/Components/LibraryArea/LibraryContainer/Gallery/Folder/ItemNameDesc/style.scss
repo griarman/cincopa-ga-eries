@@ -1,0 +1,7 @@
+.cancelName, .cancelDesc {
+  background: #f6f7fb!important;
+  &:before {
+    color: #656d78!important;
+    content: "\e613"!important;
+  }
+}

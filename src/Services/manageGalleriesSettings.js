@@ -5,10 +5,9 @@ import { urls } from '../Constants';
 class ManageGalleriesSettings {
   static saveNewDesc(fid, newDesc) {
     newDesc = !newDesc.trim() ? 'no-description' : Helpers.htmlEntities(newDesc.trim());
-    return createRequest('ajax', {
-      type: 'POST',
+    return createRequest('jsonp', {
       url: '/media-platform/wizard_edit_ajax.aspx',
-      dataType: 'html',
+      callbackName: 'json_callback',
       data: {
         cmd: 'setfoldermeta',
         fid: fid,

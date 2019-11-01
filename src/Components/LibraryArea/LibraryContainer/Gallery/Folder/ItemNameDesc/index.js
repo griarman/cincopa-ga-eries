@@ -1,94 +1,28 @@
-import React, { Component } from 'react'
+import React, { Component } from 'react';
 
-import MyContext from '../../../../../../Context/MyContext'
-import './style.scss'
+import Name from './Name';
+import Description from './Description';
+import MyContext from '../../../../../../Context/MyContext';
+import './style.scss';
 
 class ItemNameDesc extends Component {
-  constructor(props) {
-    super(props);
-
-    this.nameRef = React.createRef(null);
-    this.newName = React.createRef(null);
-    this.newDesc = React.createRef(null);
-    this.descRef = React.createRef(null);
-
-    this.state = {
-      nameChanger: ['none', 'block'],
-      descChanger: ['none', 'block'],
-    }
-  }
-
   render() {
     const { name, description, modified, fid, did, tags} = this.props;
     const { ManageGalleriesSettings } = this.context;
 
     return (
       <td className='item_name_desc'>
-        <span
-          className='name filename'
-          title={name}
-          style={{display: this.state.nameChanger[1]}}
-          onClick={() => {
-            this.setState({ nameChanger: this.state.nameChanger.reverse() })
-          }}
-        >
-          <span ref={this.newName}>{name}</span>
-          <a className='changeLink btn trans' title='Edit Title'>
-            <i className='icon-edit'/>
-          </a>
-        </span>
-        <div className='changeName' style={{display: this.state.nameChanger[0]}}>
-          <form id="changeName" onSubmit={e => this.changeName(e, fid)}>
-            <input name="changeName" type="text" defaultValue={name} ref={this.nameRef}/>
-            <div>
-              <a href="javascript:void(0)" onClick={async () => {
-                let newName = this.nameRef.current.value.trim();
-                if (!newName) {
-                  this.cancelNameChange();
-                  return;
-                }
-                const data = await ManageGalleriesSettings.changeGalleryName(fid, newName);
-                this.newName.current.innerText = data.name;
-                this.cancelNameChange();
-              }}>Save</a>
-              <a href="javascript:void(0)" onClick={this.cancelNameChange}>Cancel</a>
-            </div>
-          </form>
-        </div>
+        <Name
+          name={name}
+          changeGalleryName={ManageGalleriesSettings.changeGalleryName}
+          fid={fid}
+        />
         <div className='caption' title='no-caption'><i/></div>
-        <div
-          className='description edit_desc'
-          title={description || 'no-description'}
-          data-desc={description || 'no-description'}
-          onClick={() => {
-            this.setState({ descChanger: this.state.descChanger.reverse() })
-          }}
-        >
-          <i style={{paddingRight: 36 + 'px'}}>{description || 'no-description'}</i>
-          <a className='changeLink btn trans' title='Edit Description'><i className='icon-edit'/></a>
-        </div>
-        <div className="changeDescription fieldItem">
-          <textarea
-            ref={this.descRef}
-            className="field"
-            name="change_desc"
-            placeholder="Gallery Description">{description || 'no-description'}
-          </textarea>
-          <div className="save_cancel_box" style={{display: this.state.descChanger[0]}}>
-            <a href="javascript:void(0)" onClick={async () => {
-              let newDesc = this.descRef.current.value.trim();
-              if (!newDesc) {
-                this.cancelNameChange();
-                return;
-              }
-              const newDescData = await ManageGalleriesSettings.saveNewDesc(fid, newDesc);
-              this.newDesc.current.innerText = newDescData.description;
-              this.cancelDescChange();
-
-            }}>Save</a>
-            <a href="javascript:void(0)" onClick={this.cancelDescChange}>Cancel</a>
-          </div>
-        </div>
+        <Description
+          fid={fid}
+          description={description}
+          saveNewDesc={ManageGalleriesSettings.saveNewDesc}
+        />
         <div className='lastUpdated'>
           <i className='icon-clock'/>
           <div className='date_div'> Last Updated: {modified.split(' ')[0]}</div>
@@ -139,20 +73,9 @@ class ItemNameDesc extends Component {
     )
   };
 
-  changeName = (e, fid) => {
-    e.preventDefault();
-    console.log(fid);
-  };
-
-  cancelNameChange = () => {
-    this.setState({
-      nameChanger: this.state.nameChanger.reverse()
-    })
-  };
-
   cancelDescChange = () => {
     this.setState({
-      nameChanger: this.state.nameChanger.reverse()
+      descChanger: this.state.descChanger.reverse()
     })
   }
 }
