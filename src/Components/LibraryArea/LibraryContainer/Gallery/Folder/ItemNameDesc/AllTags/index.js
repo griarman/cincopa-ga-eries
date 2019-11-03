@@ -115,16 +115,15 @@ class AllTags extends Component {
                     if (!this.state.initialTags.find(tag => value.toLowerCase() === tag.toLowerCase())) {
                       this.state.tagCloud[value] = 1;
                       this.props.changeAllTags(this.state.tagCloud);
-                      let newTags = this.state.propTags.split(',');
+                      let newTags = this.state.propTags.split(',').filter(Boolean);
                       newTags.push(value);
-                      console.log(newTags.join(','), 2);
                       this.tagRef.current.value = '';
                       this.setState(prevState => ({
                         ...prevState,
                         tagText: 'none',
                         ownTags: Object.keys(this.state.tagCloud),
                         propTags: newTags.join(',')
-                      }));
+                      }), () => {this.props.setTags(this.props.fid, this.state.propTags);});
                     }
                   }}>&nbsp;&nbsp;&nbsp;&nbsp;(Create tag)</span>
                 </p>
@@ -179,7 +178,6 @@ class AllTags extends Component {
         }
         if (tagCloud[tag] - 1 === 0) delete tagCloud[tag];
         else tagCloud[tag]--;
-        tagCloud[tag]++;
         break;
     }
     this.setState(prevState => ({
