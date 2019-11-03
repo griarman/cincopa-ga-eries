@@ -30,6 +30,7 @@ class ItemNameDesc extends Component {
           modified={modified}
         />
         <AllTags
+          fid={fid}
           tags={tags}
           tagCloud={tagCloud}
           changeAllTags={changeAllTags}

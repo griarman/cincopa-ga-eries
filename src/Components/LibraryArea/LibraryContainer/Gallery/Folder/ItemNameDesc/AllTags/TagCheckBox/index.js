@@ -1,12 +1,23 @@
-import React, { useState } from 'react'
+import React, { useRef } from 'react'
 
-const TagCheckBox = ({ searchTag, checked }) => {
-  const [propChecked, setPropChecked] = useState(checked);
+const TagCheckBox = ({ searchTag, checked, changeTagsStatistic }) => {
+  const checkbox = useRef(null);
+
   return (
-    <li onClick={() => {}}>
+    <li onClick={() => {
+      let selected = checkbox.current.checked;
+      if (selected) {
+        checkbox.current.checked = false;
+        changeTagsStatistic(searchTag, 'remove');
+      }
+      else {
+        checkbox.current.checked = false;
+        changeTagsStatistic(searchTag, 'add');
+      }
+    }}>
       <div className="selected">
         <label className="checkBox">
-          <input type="checkbox" value={searchTag} checked={propChecked} />
+          <input type="checkbox" value={searchTag} checked={checked} ref={checkbox} />
           <i/><b/>
         </label>
       </div>

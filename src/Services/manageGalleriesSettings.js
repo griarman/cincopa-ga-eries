@@ -25,6 +25,7 @@ class ManageGalleriesSettings {
       cmd: 'setfoldername',
       newname: name,
     };
+
     return createRequest('jsonp', {
       url,
       data,
