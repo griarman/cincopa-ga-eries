@@ -18,6 +18,7 @@ class AppProvider extends Component {
         runtime: 0,
       },
       changeSearchTags: this.changeSearchTags,
+      changeAllTags: this.changeAllTags,
       ManageGalleriesSettings: ManageGalleriesSettings,
       searchTags: [],
       foldersWholeData: [],
@@ -90,7 +91,6 @@ class AppProvider extends Component {
 
   render() {
     if(!this.state.initialize) return null;
-
     return (
       <MyContext.Provider value={this.state}>
         {this.props.children}
@@ -102,6 +102,19 @@ class AppProvider extends Component {
     this.setState(prevState => ({
       ...prevState,
       searchTags: newSearchTags
+    }));
+  };
+
+  changeAllTags = newTags => {
+    this.setState(prevState => ({
+      ...prevState,
+      api_getList: {
+        ...prevState.api_getList,
+        items_data: {
+          ...prevState.api_getList.items_data,
+          tag_cloud: newTags
+        }
+      }
     }));
   };
 

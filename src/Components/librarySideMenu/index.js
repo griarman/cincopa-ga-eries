@@ -22,7 +22,7 @@ const LibrarySideMenu = () => (
             </h4>
             <div className='all_tags tagsCloud' id='tagsCloud'>
               <ul>
-                {tagCloud && Object.keys(tagCloud).map(el =>
+                {Object.keys(tagCloud).map(el =>
                   <li
                     key={Helpers.generateRandomNumber()}
                     data-val={el}

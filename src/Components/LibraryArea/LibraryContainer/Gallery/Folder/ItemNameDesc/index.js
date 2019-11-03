@@ -10,7 +10,7 @@ import './style.scss';
 class ItemNameDesc extends Component {
   render() {
     const { name, description, modified, fid, did, tags} = this.props;
-    const { ManageGalleriesSettings } = this.context;
+    const { ManageGalleriesSettings,  api_getList: { items_data: { tag_cloud: tagCloud } }, changeAllTags, searchTags }  = this.context;
 
     return (
       <td className='item_name_desc'>
@@ -29,7 +29,12 @@ class ItemNameDesc extends Component {
           did={did}
           modified={modified}
         />
-        <AllTags tags={tags} />
+        <AllTags
+          tags={tags}
+          tagCloud={tagCloud}
+          changeAllTags={changeAllTags}
+          setTags={ManageGalleriesSettings.setTags}
+        />
         <div className='moreInfo'/>
       </td>
     )

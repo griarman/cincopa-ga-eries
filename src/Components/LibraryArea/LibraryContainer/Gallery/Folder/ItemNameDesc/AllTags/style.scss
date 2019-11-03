@@ -5,3 +5,19 @@
 tr:hover .selectTags {
   display: block;
 }
+
+.itemsDropdown.tagsList {
+  z-index: 500;
+}
+
+.checkBox input[type=checkbox]:checked + i {
+  background: #3eb060;
+  box-shadow: none;
+  border-color: #3eb060;
+}
+
+.itemsDropdown_items {
+  & li {
+    cursor: pointer;
+  }
+}
