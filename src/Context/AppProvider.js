@@ -24,6 +24,7 @@ class AppProvider extends Component {
       foldersWholeData: [],
       initialize: false,
       loading: true,
+      loadNewGallery: false
     };
 
     this.elementsLoading = null;
@@ -37,6 +38,8 @@ class AppProvider extends Component {
       initialize: true,
     });
 
+    window.addEventListener('hashchange', this.hashChange);
+
     window.addEventListener('scroll', this.lazyLoad);
   }
 
@@ -49,43 +52,7 @@ class AppProvider extends Component {
     await this.elementsLoading;
     const firstFiveGalleries = this.state.api_getList.folders.splice(0, 5);
     return Promise.all(
-    firstFiveGalleries.map(el => this.getGallery(el, type))
-    /*async el => {
-        const getStatuses = (() => {
-          const options = {
-            url: urls.getStatusUrl,
-            data: {
-              cmd: 'getstatus',
-              fid: el.sysdata.fid,
-            },
-          };
-          // let url = window.location.host === 'localhost:3000' ? window.location.href + urls.getStatusUrl : urls.getStatusUrl;
-          return CreateRequest('jsonp', options);
-        })();
-
-        const getHitData = (() => {
-          const options = {
-            url: urls.analyticsUrl,
-            data: {
-              m: 'hits-urls',
-              p: 'lw',
-              fid: el.sysdata.did
-            },
-          };
-          // let url = window.location.host === 'localhost:3000' ? window.location.href + urls.analyticsUrl : urls.analyticsUrl;
-          return CreateRequest('jsonp', options);
-        })();
-        const getTraffic = CreateRequest('ajax', {
-          url: "//www.cincopa.com/media-platform/api/redis?disable_editor=y&cmd=topfid&stats=fid-traffic-stats&end=-1"
-        }).then(({ data }) => data);
-
-        const data = await Promise.all([
-          getStatuses,
-          getHitData,
-          getTraffic,
-        ]);
-        this.changeGalleriesFolders(data, type);
-      }*/
+      firstFiveGalleries.map(el => this.getGallery(el, type))
     );
   }
 
@@ -189,13 +156,50 @@ class AppProvider extends Component {
     });
   };
 
-  lazyLoad = () => {
-    if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight) {
+  lazyLoad = async () => {
+    if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight - 150) {
       const nextGallery = this.state.api_getList.folders.splice(0, 1)[0];
-      console.log(1234);
-      if (nextGallery) this.getGallery(nextGallery, 'add');
 
+      if (nextGallery && !this.state.loadNewGallery) {
+        this.setState(prevState => ({
+          ...prevState,
+          loadNewGallery: true,
+        }));
+        await this.getGallery(nextGallery, 'add');
+        this.setState(prevState => ({
+          ...prevState,
+          loadNewGallery: false,
+        }));
+      }
     }
+  };
+
+  hashChange = async () => {
+    let params = {
+      tags: '',
+      page: 1,
+      per_page: 50,
+      disable_editor: true,
+    };
+    let { hash } =  window.location;
+    hash = hash.slice(1).split('&').reduce((el, next) => {
+      let [key, value] = next.split('=');
+
+      el[decodeURIComponent(key) === 'tag' ? 'tags' : decodeURIComponent(key)] = decodeURIComponent(value);
+      return el;
+    }, {});
+    Object.keys(params).forEach(el => {
+      if (!(el in hash)) {
+        hash[el] = params[el];
+      }
+    });
+    let newApiGetList = await CreateRequest('ajax', {
+      url: urls.getFoldersWithApiUrl,
+      cache: false,
+      method: 'POST',
+      data: hash,
+    });
+    console.log(newApiGetList);
   }
 }
 

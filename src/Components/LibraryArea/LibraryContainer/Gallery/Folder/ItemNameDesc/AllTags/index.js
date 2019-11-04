@@ -15,7 +15,7 @@ class AllTags extends Component {
       tagText: 'none',
       ownTags: Object.keys(props.tagCloud),
       newSearchTag: '',
-      propTags: props.tags
+      propTags: props.tags,
     };
 
     this.tagRef = React.createRef(null);
@@ -134,6 +134,7 @@ class AllTags extends Component {
                   let tagsArray = this.state.propTags.split(',');
                   let checked = tagsArray.indexOf(searchTag) !== -1 ? 'checked' : '';
                   return <TagCheckBox
+                    key={Helpers.generateRandomNumber()}
                     checked={checked}
                     searchTag={searchTag}
                     changeTagsStatistic={this.changeTagsStatistic}
@@ -180,14 +181,17 @@ class AllTags extends Component {
         else tagCloud[tag]--;
         break;
     }
+    console.log(propTags, tagCloud);
     this.setState(prevState => ({
       ...prevState,
       tagCloud,
-      propTags
+      propTags,
+      ownTags: Object.keys(tagCloud),
     }));
     this.props.changeAllTags(tagCloud);
     let sendTag = !propTags ? ',' : propTags;
     this.props.setTags(this.props.fid, sendTag);
+    window['sendEventToGTM']("Gallery Meta", "Tag Change", "", true);
   }
 }
 

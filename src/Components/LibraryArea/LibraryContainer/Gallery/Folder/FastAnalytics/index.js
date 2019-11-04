@@ -29,8 +29,9 @@ const FastAnalytics = ({ hits, days }) => {
           //return Highcharts.dateFormat('%d/%m', this.value); //original code
           let dateVal = new Date(this.value);
           dateVal = dateVal.setDate(dateVal.getDate() + 1);//needed for safari browser & add + one day (not sure why but start from -1 day);
-          let myDate = new Date(dateVal);
-          return `${myDate.getDate()}/${myDate.getMonth() + 1}`;
+          let myDate = new Date(this.value);
+          let day = (myDate.getDate() < 10) ? '0' + myDate.getDate() : myDate.getDate(), month = myDate.getMonth() + 1;
+          return `${day}/${month}`;
         }
       }
     },

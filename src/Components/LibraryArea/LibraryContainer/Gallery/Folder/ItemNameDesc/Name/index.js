@@ -34,12 +34,12 @@ const Name = ({ name, changeGalleryName, fid }) => {
           <input name="changeName" type="text" defaultValue={name} ref={nameRef}/>
           <div>
             <a href="javascript:void(0)" onClick={async () => {
-              let newName = nameRef.current.value.trim();
-              if (!newName) {
+              let newNameText = nameRef.current.value.trim();
+              if (!newNameText) {
                 setName([...nameChanger].reverse());
                 return;
               }
-              const data = await changeGalleryName(fid, newName);
+              const data = await changeGalleryName(fid, newNameText);
               newName.current.innerText = data.name;
               setName([...nameChanger].reverse());
             }}
