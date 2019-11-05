@@ -74,7 +74,7 @@ const GalleryEditMenu = (action, fid, did) => {
         window.close()
       }
       break;*/
-    case '15':
+    case 15:
       window.location.href = `https://www.cincopa.com/media-platform/test?fid=${did}`;
   }
 };

@@ -6,7 +6,7 @@ import './style.scss'
 
 const LibrarySideMenu = () => (
   <MyContext.Consumer>
-    {({ api_getList: { items_data: { tag_cloud: tagCloud } }, changeSearchTags, searchTags }) => (
+    {({ apiGetList: { items_data: { tag_cloud: tagCloud } }, changeSearchTags, searchTags }) => (
         <div id='librarySideMenu'>
           <div className='sideMenuControls'>
             <a href='' className='upload_files btn primary'>

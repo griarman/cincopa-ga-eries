@@ -17,10 +17,9 @@ const Folder = ({ folderInfo, folderAnalytics, ManageGalleriesSettings }) => (
     >
       <td className='galleryThumb landscape'>
         <div
-          rel='15'
           className='thumb'
-          onClick={e => {
-            GalleryEditMenu(e.currentTarget.rel, folderInfo.fid, folderInfo.did)
+          onClick={() => {
+            GalleryEditMenu(15, folderInfo.fid, folderInfo.did)
           }}>
           <div className={'img' + folderInfo.imgLoaded}>
             <a

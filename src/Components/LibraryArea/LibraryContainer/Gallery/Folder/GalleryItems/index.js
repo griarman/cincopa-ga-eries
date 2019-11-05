@@ -38,7 +38,7 @@ const GalleryItems = props => {
     <td className='galleryItems'>
       <div>
         <div className='galleryDomains' onClick={e => {
-          setDomainState()
+          setDomainState(true);
         }}>
           <i className='icon-domain'/>
           <span>

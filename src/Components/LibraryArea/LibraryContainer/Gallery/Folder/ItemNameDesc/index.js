@@ -10,7 +10,7 @@ import './style.scss';
 class ItemNameDesc extends Component {
   render() {
     const { name, description, modified, fid, did, tags} = this.props;
-    const { ManageGalleriesSettings,  api_getList: { items_data: { tag_cloud: tagCloud } }, changeAllTags }  = this.context;
+    const { ManageGalleriesSettings,  apiGetList: { items_data: { tag_cloud: tagCloud } }, changeAllTags }  = this.context;
 
     return (
       <td className='item_name_desc'>

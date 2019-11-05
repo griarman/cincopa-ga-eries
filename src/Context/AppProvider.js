@@ -10,7 +10,7 @@ class AppProvider extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      api_getList: {
+      apiGetList: {
         items_data: {},
         calldata: {},
         folders: [],
@@ -24,7 +24,8 @@ class AppProvider extends Component {
       foldersWholeData: [],
       initialize: false,
       loading: true,
-      loadNewGallery: false
+      noResult: false,
+      searchText: '',
     };
 
     this.elementsLoading = null;
@@ -39,18 +40,20 @@ class AppProvider extends Component {
     });
 
     window.addEventListener('hashchange', this.hashChange);
-
-    window.addEventListener('scroll', this.lazyLoad);
+    window.addEventListener('scroll', this.asyncGetGalleries);
   }
 
   componentWillUnmount() {
     clearTimeout(this.timer);
-    window.removeEventListener('scroll', this.lazyLoad);
+    window.removeEventListener('scroll', this.asyncGetGalleries);
   }
 
   async fetchData(type) {
     await this.elementsLoading;
-    const firstFiveGalleries = this.state.api_getList.folders.splice(0, 5);
+    const firstFiveGalleries = this.state.apiGetList.folders.splice(0, 5);
+    /*const getTraffic = CreateRequest('ajax', {
+      url: "//www.cincopa.com/media-platform/api/redis?disable_editor=y&cmd=topfid&stats=fid-traffic-stats&end=-1"
+    }).then(({ data }) => data);*/
     return Promise.all(
       firstFiveGalleries.map(el => this.getGallery(el, type))
     );
@@ -75,10 +78,10 @@ class AppProvider extends Component {
   changeAllTags = newTags => {
     this.setState(prevState => ({
       ...prevState,
-      api_getList: {
-        ...prevState.api_getList,
+      apiGetList: {
+        ...prevState.apiGetList,
         items_data: {
-          ...prevState.api_getList.items_data,
+          ...prevState.apiGetList.items_data,
           tag_cloud: newTags
         }
       }
@@ -97,8 +100,16 @@ class AppProvider extends Component {
           }));
         break;
       case 'update':
+
+        break;
+      case 'empty':
+        this.setState(prevState => ({
+          ...prevState,
+          foldersWholeData: []
+        }));
         break;
       case 'delete':
+
         break;
     }
   };
@@ -112,7 +123,6 @@ class AppProvider extends Component {
           fid: el.sysdata.fid,
         },
       };
-      // let url = window.location.host === 'localhost:3000' ? window.location.href + urls.getStatusUrl : urls.getStatusUrl;
       return CreateRequest('jsonp', options);
     })();
 
@@ -125,17 +135,12 @@ class AppProvider extends Component {
           fid: el.sysdata.did
         },
       };
-      // let url = window.location.host === 'localhost:3000' ? window.location.href + urls.analyticsUrl : urls.analyticsUrl;
       return CreateRequest('jsonp', options);
     })();
-    const getTraffic = CreateRequest('ajax', {
-      url: "//www.cincopa.com/media-platform/api/redis?disable_editor=y&cmd=topfid&stats=fid-traffic-stats&end=-1"
-    }).then(({ data }) => data);
 
     const data = await Promise.all([
       getStatuses,
       getHitData,
-      getTraffic,
     ]);
     this.changeGalleriesFolders(data, type);
   };
@@ -144,32 +149,30 @@ class AppProvider extends Component {
     return new Promise(resolve => {
       if (typeof window['api_getlist'] !== "undefined") {
         return this.setState({
-          api_getList: window['api_getlist'].response,
+          apiGetList: window['api_getlist'].response,
         }, resolve);
       }
       else if (window.location.host === 'localhost:3000') {
         return this.setState({
-          api_getList: myApiImitation.response,
+          apiGetList: myApiImitation.response,
         }, resolve);
       }
       this.timer = setTimeout(this.waitForElement, 100);
     });
   };
 
-  lazyLoad = async () => {
-    if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight - 150) {
-      const nextGallery = this.state.api_getList.folders.splice(0, 1)[0];
+  asyncGetGalleries = async () => {
+    if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight - 300) {
 
-      if (nextGallery && !this.state.loadNewGallery) {
-        this.setState(prevState => ({
-          ...prevState,
+      const nextGallery = this.state.apiGetList.folders.shift();
+
+      if (nextGallery) {
+        this.setState({
           loadNewGallery: true,
-        }));
+        });
+
         await this.getGallery(nextGallery, 'add');
-        this.setState(prevState => ({
-          ...prevState,
-          loadNewGallery: false,
-        }));
+
       }
     }
   };
@@ -182,24 +185,61 @@ class AppProvider extends Component {
       disable_editor: true,
     };
     let { hash } =  window.location;
+
     hash = hash.slice(1).split('&').reduce((el, next) => {
       let [key, value] = next.split('=');
 
       el[decodeURIComponent(key) === 'tag' ? 'tags' : decodeURIComponent(key)] = decodeURIComponent(value);
       return el;
     }, {});
+
     Object.keys(params).forEach(el => {
       if (!(el in hash)) {
         hash[el] = params[el];
       }
     });
+    if (hash.orderby && hash.orderby ==='byTraffic') {
+      hash.orderby = 'bylist';
+      // hash.orderbylist =
+    }
+    else if (hash.orderby && hash.orderby ==='byView') {
+      hash.orderby = 'bylist';
+      // hash.orderbylist =
+    }
+
+    let formData = new FormData();
+    Object.keys(hash).forEach(el => {
+      formData.append(el, hash[el]);
+    });
+
+
+
     let newApiGetList = await CreateRequest('ajax', {
       url: urls.getFoldersWithApiUrl,
       cache: false,
       method: 'POST',
-      data: hash,
+      data: formData,
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+      }
     });
-    console.log(newApiGetList);
+
+    this.changeGalleriesFolders(null, 'empty');
+
+    const noResult = !newApiGetList.data.response.folders.length;
+
+    console.log(noResult, newApiGetList.data.response.folders);
+    await this.setState({
+      noResult,
+      initialize: false,
+      apiGetList: newApiGetList.data.response,
+      searchText: hash.search ? hash.search : '',
+    });
+
+    await this.fetchData('add');
+    this.setState({
+      initialize: true,
+    })
   }
 }
 

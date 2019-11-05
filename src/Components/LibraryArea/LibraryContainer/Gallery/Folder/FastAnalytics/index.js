@@ -5,7 +5,7 @@ const FastAnalytics = ({ hits, days }) => {
   const categoriesDates = days.map(day => day.date);
   const data = days.map(day => day.hits);
 
-  let config ={
+  let config = {
     title: {
       text: 'Last Week',
         align: 'left',
@@ -95,7 +95,7 @@ const FastAnalytics = ({ hits, days }) => {
       <div className='statItem traffic'>
         <div>
           <i className="icon-stat_traffic"/>
-          <b>{}<small>MB</small></b>
+          <b>0<small>MB</small></b>
         </div>
         <div>Today's Traffic</div>
       </div>

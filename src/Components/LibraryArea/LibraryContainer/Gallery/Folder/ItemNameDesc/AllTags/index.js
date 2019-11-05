@@ -143,7 +143,7 @@ class AllTags extends Component {
               </ul>
             </div>
             <div className="itemsDropdown_head" style={{display: this.state.tagsContainer[0]}}>
-              <a className="btn primary smallest tagsListBtn" href="#" style={{display: 'inline-block'}}>Apply</a>
+              <a className="btn primary smallest tagsListBtn" href="javascript:void(0)" style={{display: 'inline-block'}}>Apply</a>
             </div>
           </div>
         </div>

@@ -15,7 +15,10 @@ function CreateRequest(type = 'ajax', params) {
       case 'ajax':
         const { axiosStatus, axiosMessage } = checkAxiosSettings(params);
         if(!axiosStatus) throw new Error(axiosMessage);
-        return axios(params);
+        return axios({
+          ...params,
+          withCredentials: true
+        });
     }
   }
   catch (e) {
