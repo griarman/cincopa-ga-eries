@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 
-import MyContext from '../../../../Context/MyContext'
+import MyContext from '../../../../Context/MyContext';
+import HashController from '../../../../libs/hashController';
 import './style.scss';
 
 class HeadLeft extends Component {
@@ -10,7 +11,17 @@ class HeadLeft extends Component {
     this.searchInput = React.createRef(null);
     this.state = {
       show: false,
+      searchText: props.searchText
     };
+    this.timer = 400;
+    this.timeout = null;
+  }
+
+  static getDerivedStateFromProps(nextProps, prevState) {
+    return {
+      show: prevState.show,
+      searchText: nextProps.searchText
+    }
   }
 
   render() {
@@ -45,17 +56,7 @@ class HeadLeft extends Component {
       this.setState({ show: false });
     if (ev.which === 13 || !searchValue) {
       let {hash} = window.location;
-      if (hash) {
-        hash = hash.slice(1).split('&').reduce((el, next) => {
-          let [key, value] = next.split('=');
-
-          el[decodeURIComponent(key) === 'tag' ? 'tags' : decodeURIComponent(key)] = decodeURIComponent(value);
-          return el;
-        }, {});
-      }
-      else {
-        hash = {}
-      }
+      hash = HashController.ParseHash(hash);
 
       if (searchValue)
         hash.search = searchValue;
@@ -63,7 +64,7 @@ class HeadLeft extends Component {
         delete hash.search;
 
       if (Object.keys(hash))
-        window.location.hash =  Object.entries(hash).map(([key, value]) => `${key}=${encodeURIComponent(value)}`).join('=');
+        window.location.hash =  HashController.CollectHash(hash);
     }
   };
 }

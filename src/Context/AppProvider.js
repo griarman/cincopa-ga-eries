@@ -4,6 +4,7 @@ import { myApiImitation, urls } from '../Constants';
 import MyContext from './MyContext';
 import CreateRequest from '../Services/createRequest';
 import ManageGalleriesSettings from "../Services/manageGalleriesSettings";
+import HashController from '../libs/hashController';
 
 
 class AppProvider extends Component {
@@ -33,11 +34,19 @@ class AppProvider extends Component {
   }
 
   async componentDidMount() {
-    this.elementsLoading = this.waitForElement();
-    await this.fetchData('add');
-    this.setState({
-      initialize: true,
-    });
+    if (!window.location.hash.length) {
+      this.elementsLoading = this.waitForElement();
+      await this.fetchData('add');
+      this.setState({
+        initialize: true,
+      });
+    }
+    else {
+      await this.hashChange();
+      this.setState({
+        initialize: true,
+      });
+    }
 
     window.addEventListener('hashchange', this.hashChange);
     window.addEventListener('scroll', this.asyncGetGalleries);
@@ -186,12 +195,7 @@ class AppProvider extends Component {
     };
     let { hash } =  window.location;
 
-    hash = hash.slice(1).split('&').reduce((el, next) => {
-      let [key, value] = next.split('=');
-
-      el[decodeURIComponent(key) === 'tag' ? 'tags' : decodeURIComponent(key)] = decodeURIComponent(value);
-      return el;
-    }, {});
+    hash = HashController.ParseHash(hash);
 
     Object.keys(params).forEach(el => {
       if (!(el in hash)) {
@@ -227,10 +231,12 @@ class AppProvider extends Component {
     this.changeGalleriesFolders(null, 'empty');
 
     const noResult = !newApiGetList.data.response.folders.length;
+    const searchTags = hash.tags ? hash.tags.split(',') : [];
+    console.log(searchTags);
 
-    console.log(noResult, newApiGetList.data.response.folders);
     await this.setState({
       noResult,
+      searchTags,
       initialize: false,
       apiGetList: newApiGetList.data.response,
       searchText: hash.search ? hash.search : '',

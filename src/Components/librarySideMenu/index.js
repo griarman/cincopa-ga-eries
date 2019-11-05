@@ -1,8 +1,9 @@
-import React from 'react'
+import React from 'react';
 
-import Helpers from '../../libs/helpers'
-import MyContext from '../../Context/MyContext'
-import './style.scss'
+import Helpers from '../../libs/helpers';
+import HashController from '../../libs/hashController';
+import MyContext from '../../Context/MyContext';
+import './style.scss';
 
 const LibrarySideMenu = () => (
   <MyContext.Consumer>
@@ -44,6 +45,20 @@ const selectByTag = (e, changeSearchTags, searchTags) => {
   if (!searchTags.includes(value)) {
     searchTags.push(value);
     changeSearchTags(searchTags);
+    let hashString = searchTags.map(tag => encodeURIComponent(tag)).join(',');
+    let { hash } = window.location;
+    hash = HashController.ParseHash(hash);
+    console.log(hash);
+    if (hash.tag) {
+      hash.tag = hashString;
+    }
+    if (hash.tags) {
+      hash.tags = hashString;
+    }
+    else {
+      hash.tag = hashString;
+    }
+    window.location.hash = HashController.CollectHash(hash);
   }
 };
 
