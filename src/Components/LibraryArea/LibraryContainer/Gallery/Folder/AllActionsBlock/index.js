@@ -4,20 +4,23 @@ import DropDown from './DropDown'
 import { allActionsBlock } from '../../../../../../Constants'
 import GalleryEditMenu from '../../../../../../Services/GalleryEditMenu'
 import './style.scss'
+import Buttons from "./Buttons";
 
 const AllActionsBlock = ({ fid, did }) => {
 
   const [dropDownState, setDropDownState] = useState(false);
+  const [timer, setTimer]= useState(null);
   const handleEvents = {
     showMore: {
       onClick: () => { setDropDownState(!dropDownState) },
-      onMouseLeave: () => {
+      /*onMouseLeave: () => {
         if (dropDownState) {
-          setTimeout(() => {
+          let newTimer = setTimeout(() => {
             setDropDownState(false);
           }, 700);
+          setTimer(newTimer)
         }
-      }
+      }*/
     },
     customize: {
       onClick: e => { GalleryEditMenu(e.currentTarget.rel, fid, did) }
@@ -30,23 +33,27 @@ const AllActionsBlock = ({ fid, did }) => {
     }
   };
 
-return (
+
+  return (
     <div className="all_actions_block">
       {allActionsBlock.map(action =>
-        (<a key={action.rel}
-            className={action.className}
-            data-eventname={action['data-eventname'] ? action['data-eventname'] : ''}
-            rel={action.rel ? action.rel : ''}
-            {...handleEvents[action.events]}
-          >
-            <i className={action.i.className}
-               data-eventname={action.i['data-eventname'] ? action.i['data-eventname'] : ''}
-            />
-            <b className={action.b.className}>{action.b.text}</b>
-          </a>
-        )
+        <Buttons
+          key={action.rel}
+          action={action}
+          handleEvents={handleEvents}
+        />
       )}
-      <DropDown open={dropDownState}/>
+      <div
+        className="overLine"
+        onClick={() => {
+          setDropDownState(!dropDownState)
+        }}
+        style={{display: dropDownState ? 'block' : 'none'}}
+      />
+      <DropDown
+        open={dropDownState}
+        timer={timer}
+      />
     </div>
 )};
 

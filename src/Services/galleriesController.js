@@ -32,7 +32,7 @@ class GalleriesController {
     return jsonpRequest(url, {})
   }
 
-  static resync_folder(fid) {
+  static resyncFolder(fid) {
     const hostUrl = path.indexOf('media-platform') === -1 ? '/media-platform/' : '',
           url = `${hostUrl}wizard_edit_ajax.aspx?cmd=resync&fid=${fid}`;
 

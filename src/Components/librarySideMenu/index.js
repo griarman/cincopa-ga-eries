@@ -45,21 +45,18 @@ const selectByTag = (e, changeSearchTags, searchTags) => {
   if (!searchTags.includes(value)) {
     searchTags.push(value);
     changeSearchTags(searchTags);
-    let hashString = searchTags.map(tag => encodeURIComponent(tag)).join(',');
-    let { hash } = window.location;
-    hash = HashController.ParseHash(hash);
-    console.log(hash);
-    if (hash.tag) {
-      hash.tag = hashString;
-    }
-    if (hash.tags) {
-      hash.tags = hashString;
-    }
-    else {
-      hash.tag = hashString;
-    }
-    window.location.hash = HashController.CollectHash(hash);
+    changeHashByTags(searchTags)
   }
+};
+
+const changeHashByTags = searchTags => {
+  let hashString = searchTags.map(tag => encodeURIComponent(tag)).join(',');
+  let { hash } = window.location;
+  hash = HashController.ParseHash(hash);
+  console.log(hash);
+  hash.tag = hashString;
+  delete hash.tags;
+  window.location.hash = HashController.CollectHash(hash);
 };
 
 export default LibrarySideMenu;

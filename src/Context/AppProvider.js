@@ -232,7 +232,6 @@ class AppProvider extends Component {
 
     const noResult = !newApiGetList.data.response.folders.length;
     const searchTags = hash.tags ? hash.tags.split(',') : [];
-    console.log(searchTags);
 
     await this.setState({
       noResult,
