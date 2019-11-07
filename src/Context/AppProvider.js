@@ -99,8 +99,10 @@ class AppProvider extends Component {
         }
         else {
           let { foldersWholeData } = this.state;
-          foldersWholeData.splice(beforeElement, 0, foldersData);
-          console.log(foldersWholeData);
+          if (beforeElement === 0)
+            foldersWholeData.unshift(foldersData);
+          else
+            foldersWholeData.splice(beforeElement - 1, 0, foldersData);
           this.setState({ foldersWholeData });
         }
         break;
@@ -113,7 +115,9 @@ class AppProvider extends Component {
         });
         break;
       case 'delete':
-
+        this.setState({
+          foldersWholeData: foldersData,
+        });
         break;
     }
   };

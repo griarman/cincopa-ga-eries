@@ -1,46 +1,56 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext } from 'react';
 
 import GalleriesController from '../../../../../../../../Services/galleriesController';
 
 import MyContext from '../../../../../../../../Context/MyContext';
 
-const Option = ({ fid, name, a, event, rel, className, index }) => {
+const Option = ({ fid, name, a, event, rel, className, index, closeDropDown }) => {
 
   let elements = {};
-  const { changeGalleriesFolders } = useContext(MyContext);
+  const { changeGalleriesFolders, foldersWholeData } = useContext(MyContext);
   const handleEvents = {
     duplicate: {
       onClick: async () => {
         const data = await GalleriesController.duplicateGallery(fid, name, true);
         changeGalleriesFolders(data, 'add', elements[index].closest('tr').dataset.index);
+        closeDropDown();
       },
     },
     textRecorder: {
-      onClick: e => {
+      onClick: () => {
+        window.location.href = `https://www.cincopa.com/media-platform/upload-files?fid=${fid}`;
       }
     },
     reSync: {
       onClick: e => GalleriesController.resyncFolder(fid),
     },
     duplicateSettings: {
-      onClick: e => {
-        const data = GalleriesController.duplicateGallery(fid, name);
-
+      onClick: async () => {
+        const data = await GalleriesController.duplicateGallery(fid, name);
+        changeGalleriesFolders(data, 'add', elements[index].closest('tr').dataset.index);
+        closeDropDown();
       },
     },
     download: {
-      onClick: e => {
+      onClick: () => {
+        if (window['__user_feature']['ui-assets-allow-download'].value === 'true') {
+          window.location.href = `//www.cincopa.com/media-platform/download.aspx?fid=${fid}`;
+        } else {
+          alert(window['__user_feature']['ui-assets-allow-download'].upgrade_text);
+        }
       }
     },
     deleteGallery: {
-      onClick: e => {
+      onClick: async () => {
+        const { result } = await GalleriesController.deleteFolderWithAssets(fid);
+        if (result === 'ok') {
+          const data = foldersWholeData.filter(folder => folder[0].fid !== fid);
+          changeGalleriesFolders(data, 'delete');
+          closeDropDown();
+        }
       }
     },
   };
-
-  useEffect(() => {
-
-  });
 
   return (
     <li

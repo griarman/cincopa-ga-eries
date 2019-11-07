@@ -1,10 +1,14 @@
 import React from 'react';
 
 import GalleryEditMenu from '../../../../../Services/GalleryEditMenu';
+
+
+import FullAnalitics from './FullAnalitics';
 import AllActionsBlock from './AllActionsBlock';
 import ItemNameDesc from './ItemNameDesc';
 import GalleryItems from './GalleryItems';
 import FastAnalytics from './FastAnalytics';
+
 import './style.scss';
 
 const Folder = ({ folderInfo, folderAnalytics, index }) => (
@@ -23,10 +27,10 @@ const Folder = ({ folderInfo, folderAnalytics, index }) => (
           onClick={() => {
             GalleryEditMenu(15, folderInfo.fid, folderInfo.did)
           }}>
-          <div className={'img' + folderInfo.imgLoaded}>
-            <a
-              dangerouslySetInnerHTML={{__html: folderInfo.img ? folderInfo.img : '<img src="_cms/design20/images/nothumb.png" alt=""/>'}}
-            />
+          <div className={'img ' + (folderInfo.img === 'Empty Gallery' ? 'loaded empty' : 'loaded')}>
+            {folderInfo.img !== 'Empty Gallery' && <a
+              dangerouslySetInnerHTML={{__html: folderInfo.img || '<img src="_cms/design20/images/nothumb.png" alt=""/>'}}
+            />}
           </div>
         </div>
         <AllActionsBlock
@@ -47,7 +51,7 @@ const Folder = ({ folderInfo, folderAnalytics, index }) => (
         {...folderAnalytics}
       />
     </tr>
-    <tr {...folderAnalytics} />
+    <FullAnalitics {...folderAnalytics} />
   </>
 );
 

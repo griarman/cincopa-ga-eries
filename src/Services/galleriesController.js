@@ -52,13 +52,12 @@ class GalleriesController {
   }
 
   static deleteFolderWithAssets(fid) {
-    const url = `https://api.cincopa.com/v2/gallery.delete.json`;
+    const url = `https://www.cincopa.com/media-platform/wizard_edit_ajax.aspx`;
     return CreateRequest('jsonp', {
       url,
       data: {
-        api_token: 'session',
+        cmd: 'deletefolder',
         fid: fid,
-        delete_assets: 'yes',
       }
     });
   }
