@@ -12,6 +12,7 @@ const Option = ({ fid, name, a, event, rel, className, index, closeDropDown }) =
     duplicate: {
       onClick: async () => {
         const data = await GalleriesController.duplicateGallery(fid, name, true);
+        data.push('none');
         changeGalleriesFolders(data, 'add', elements[index].closest('tr').dataset.index);
         closeDropDown();
       },
@@ -27,6 +28,7 @@ const Option = ({ fid, name, a, event, rel, className, index, closeDropDown }) =
     duplicateSettings: {
       onClick: async () => {
         const data = await GalleriesController.duplicateGallery(fid, name);
+        data.push('none');
         changeGalleriesFolders(data, 'add', elements[index].closest('tr').dataset.index);
         closeDropDown();
       },

@@ -8,6 +8,7 @@ import CreateRequest from '../Services/createRequest';
 import GalleryInfo from '../Services/getGalleryInfo';
 
 import HashController from '../libs/hashController';
+import Helpers from '../libs/helpers';
 
 class AppProvider extends Component {
   constructor(props) {
@@ -124,7 +125,31 @@ class AppProvider extends Component {
 
   getGallery = async (el, type) => {
     const data = await GalleryInfo.getGallery(el);
+    data.push('none');
     this.changeGalleriesFolders(data, type);
+  };
+
+  toggleFullAnalytics = async fid => {
+
+    let { foldersWholeData } = this.state;
+    let folderIndex = foldersWholeData.findIndex(folder => folder[0].did === fid);
+    if (folderIndex !== -1) {
+      let newFoldersData = Helpers.deepCopy(foldersWholeData);
+      let folder = newFoldersData[folderIndex];
+
+      folder[2] = folder[2] === 'none' ? 'table-row' : 'none';
+      if (folder.length !== 5) {
+        let month = GalleryInfo.getHitData(folder[0].did, 'lm');
+        let year = GalleryInfo.getHitData(folder[0].did, 'ly');
+
+        let data = await Promise.all([month, year]);
+        folder.push(...data);
+      }
+      newFoldersData[folderIndex] = folder;
+      this.setState({
+        foldersWholeData: newFoldersData,
+      }, () => {console.log(this.state.foldersWholeData)});
+    }
   };
 
   waitForElement = () => {
@@ -218,7 +243,9 @@ class AppProvider extends Component {
       changeSearchTags: this.changeSearchTags,
       changeAllTags: this.changeAllTags,
       changeGalleriesFolders: this.changeGalleriesFolders,
+      toggleFullAnalytics: this.toggleFullAnalytics,
     };
+
 
     return (
       <MyContext.Provider value={value}>

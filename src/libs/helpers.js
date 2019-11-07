@@ -38,6 +38,10 @@ class Helpers {
       D.body.clientHeight, D.documentElement.clientHeight
     );
   }
+
+  static deepCopy(obj) {
+    return JSON.parse(JSON.stringify(obj))
+  }
 }
 
 export default Helpers;

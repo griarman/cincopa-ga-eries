@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect } from 'react';
 
-import DomainsList from './DomainsList'
-import './style.scss'
+import DomainsList from './DomainsList';
+
+import './style.scss';
 
 
 const GalleryItems = props => {
@@ -26,24 +27,24 @@ const GalleryItems = props => {
 
     return list;
   }, []);
-
-  // console.log(uniqueDomainsList);
-
-  // useEffect(() => {
-  //   if(domainState) document.addEventListener('click', close);
-  //   else document.removeEventListener('click', close);
-  // });
-
+console.log(domainState);
   return (
     <td className='galleryItems'>
       <div>
-        <div className='galleryDomains' onClick={e => {
+        <div className='galleryDomains' onClick={() => {
           setDomainState(true);
         }}>
           <i className='icon-domain'/>
           <span>
             <b>{uniqueDomainsList.length}</b> domains
           </span>
+          {domainState && <div
+            className="overLine"
+            onClick={() => {
+              console.log(123456);
+              setDomainState(false)
+            }}
+          />}
           <DomainsList
             domainState={domainState}
             domains={domains}

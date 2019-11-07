@@ -27,7 +27,7 @@ class GalleriesController {
       }, 1500);
     }
     else {
-      const getStatuses = await CreateRequest('jsonp', {
+      const getStatuses = CreateRequest('jsonp', {
         url: urls.getStatusUrl,
         data:{
           cmd: 'getstatus',
@@ -35,7 +35,7 @@ class GalleriesController {
         },
       });
 
-      const getHitData = await CreateRequest('jsonp', {
+      const getHitData = CreateRequest('jsonp', {
         url: urls.analyticsUrl,
         data: {
           m: 'hits-urls',

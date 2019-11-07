@@ -3,7 +3,7 @@ import ReactHighcharts from 'react-highcharts';
 
 import Utilities from '../../../../../../libs/utilities';
 
-const FastAnalytics = ({ hits, days }) => {
+const FastAnalytics = ({ hits, days, toggleFullAnalytics, fid }) => {
 
   const categoriesDates = days.map(day => day.date);
   const data = days.map(day => day.hits);
@@ -28,7 +28,12 @@ const FastAnalytics = ({ hits, days }) => {
         </div>
         <div>Weekly views</div>
       </div>
-      <div className='statItem more' >
+      <div
+        className='statItem more'
+        onClick={() => {
+          toggleFullAnalytics(fid);
+        }}
+      >
         <div><i className="icon-stat_more" /></div>
         <div>More Analytics</div>
       </div>

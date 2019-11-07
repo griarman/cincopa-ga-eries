@@ -1,6 +1,8 @@
-import React from 'react'
+import React from 'react';
 
-import Domains from './Domains'
+import Domains from './Domains';
+
+import './style.scss';
 
 const DomainsList = ({ domains, uniqueDomainsList, domainState }) => (
   <div className={'itemsDropdown domainsList ' +  (domainState ? 'openedList' : '')} >

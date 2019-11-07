@@ -11,7 +11,7 @@ import FastAnalytics from './FastAnalytics';
 
 import './style.scss';
 
-const Folder = ({ folderInfo, folderAnalytics, index }) => (
+const Folder = ({ folderInfo, folderAnalytics, fullAnalyticsOpen, toggleFullAnalytics, index }) => (
   <>
     <tr
       id={'gallery_' + folderInfo.fid}
@@ -49,9 +49,15 @@ const Folder = ({ folderInfo, folderAnalytics, index }) => (
       />
       <FastAnalytics
         {...folderAnalytics}
+        toggleFullAnalytics={toggleFullAnalytics}
       />
     </tr>
-    <FullAnalitics {...folderAnalytics} />
+    <FullAnalitics
+      toggleFullAnalytics={toggleFullAnalytics}
+      fullAnalyticsOpen={fullAnalyticsOpen}
+      did={folderInfo.did}
+      fid={folderInfo.fid}
+    />
   </>
 );
 
