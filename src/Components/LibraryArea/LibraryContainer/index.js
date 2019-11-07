@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
 
 import MyContext from '../../../Context/MyContext';
+
 import Gallery from './Gallery';
 import NoResult from './NoResult';
 import EmptyContainer from './EmptyContainer';
-import './style.scss'
+
+import './style.scss';
 
 class LibraryContainer extends Component {
   constructor(props) {
@@ -24,22 +26,28 @@ class LibraryContainer extends Component {
   }
 
   render() {
-    if(!this.state.initialize) return null;
+    if (!this.state.initialize) return null;
     const { foldersWholeData: folders } = this.context;
-    let component = (!folders.length && this.state.noResult) ?
-      <NoResult/>
-      :
-      (!folders.length && !this.state.noResult) ?
-        <EmptyContainer/>
-        :
-        <Gallery folders={folders}/>;
+
+    let component;
+    if (!folders.length && this.state.noResult) {
+      component = <NoResult />;
+    } else if (!folders.length && !this.state.noResult) {
+      component = <EmptyContainer />;
+    } else {
+      component = <Gallery folders={folders} />;
+    }
+
     return (
-      <table id='libraryContainer' className='hided libraryContainer galleriesList galleries_list'>
+      <table
+        id="libraryContainer"
+        className="hided libraryContainer galleriesList galleries_list"
+      >
         <tbody>
-        { component }
+          {component}
         </tbody>
       </table>
-    )
+    );
   }
 }
 

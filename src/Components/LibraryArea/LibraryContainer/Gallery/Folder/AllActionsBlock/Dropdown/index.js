@@ -1,7 +1,12 @@
 import React, { Component } from 'react';
 
-import GalleryEditMenu from '../../../../../../../Services/GalleryEditMenu';
 import { DropDownOptions } from '../../../../../../../Constants';
+
+import GalleriesController from '../../../../../../../Services/galleriesController';
+import GalleryEditMenu from '../../../../../../../Services/GalleryEditMenu';
+
+import Option from './Option';
+
 import './style.scss';
 
 class DropDown extends Component {
@@ -14,11 +19,10 @@ class DropDown extends Component {
     this.state = {
       opened: open ? 'block' : 'none',
     };
-    this. mouseEvents = {
+    this.mouseEvents = {
       onMouseEnter : () => {
         clearTimeout(timer);
         clearTimeout(this.time);
-        console.log('open');
         this.setState({
           opened: 'block',
         })
@@ -28,7 +32,6 @@ class DropDown extends Component {
           this.setState({
             opened: 'none',
           }, () => {console.log(this.state.opened, 'oooo')});
-          console.log('leave');
         }, 700);
       }
     };
@@ -55,16 +58,11 @@ class DropDown extends Component {
         >
           <ul className='controls'>
             {DropDownOptions.map(option => (
-              <li className={option.className} rel={option.rel}>
-                <a data-eventname={option.a['data-eventname'] ? option.a['data-eventname'] : ''}
-                   className={option.a.className ? option.a.className : ''}
-                >
-                  <i className={option.a.i.className}
-                     data-eventname={option.a.i['data-eventname'] ? option.a.i['data-eventname'] : ''}
-                  />
-                  <b>{option.a.b.text}</b>
-                </a>
-              </li>
+              <Option
+                fid={this.props.fid}
+                name={this.props.name}
+                {...option}
+              />
             ))}
           </ul>
         </div>

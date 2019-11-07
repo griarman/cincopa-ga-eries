@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 
-import LibrarySideMenu from "./Components/LibrarySideMenu";
-import LibraryArea from "./Components/LibraryArea";
+import LibrarySideMenu from './Components/LibrarySideMenu';
+import LibraryArea from './Components/LibraryArea';
 import AppProvider from './Context/AppProvider';
 import './style.scss';
 
@@ -10,15 +10,15 @@ class App extends Component{
     let libraryArea = document.querySelector('.libraryArea.galleriesArea');
     let stickyFooter = document.querySelector('.sticky_footer');
     if (libraryArea) libraryArea.remove();
-    if (stickyFooter) stickyFooter.remove()
+    if (stickyFooter) stickyFooter.remove();
   }
 
   render() {
     return (
       <div className="myContainer">
         <AppProvider>
-            <LibrarySideMenu/>
-            <LibraryArea/>
+            <LibrarySideMenu />
+            <LibraryArea />
         </AppProvider>
       </div>
     );

@@ -12,9 +12,6 @@ const GalleryEditMenu = (action, fid, did) => {
       // window.open(hostUrl + "wizard_style.aspx?fid=" + fid, '_self');
       window.location.href = `${host + hostUrl}wizard_style.aspx?fid=${fid}`;
       break;
-    case '2':
-      // duplicate_gallery(fid, settings_only);
-      break;
     case '3':
       // window.open(hostUrl + "wizard_gettag.aspx?fid=" + fid, '_self');
       // console.log(hostUrl);

@@ -1,33 +1,24 @@
-import React, { Component } from 'react'
+import React, { memo } from 'react';
 
-import Folder from './Folder'
-import './style.scss'
+import MyContext from '../../../../Context/MyContext';
 
-class Gallery extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      folders: props.folders,
+import Folder from './Folder';
+
+import './style.scss';
+
+const Gallery = memo(() => (
+  <MyContext.Consumer>
+    {({ foldersWholeData }) => (
+        foldersWholeData.map(folder => (
+          <Folder
+            key={folder[0].fid}
+            folderInfo={folder[0]}
+            folderAnalytics={folder[1]}
+          />
+        ))
+      )
     }
-  }
-
-  static getDerivedStateFromProps(nextProps, prevState) {
-    return {
-      folders: nextProps.folders
-    }
-  }
-
-  render() {
-    return  <>
-      {this.state.folders.map(folder =>
-        <Folder
-          key={folder[0].fid}
-          folderInfo={folder[0]}
-          folderAnalytics={folder[1]}
-          ManageGalleriesSettings={this.state.ManageGalleriesSettings}
-        />)}
-      </>
-  }
-}
+  </MyContext.Consumer>
+));
 
 export default Gallery;

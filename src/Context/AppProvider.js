@@ -1,11 +1,13 @@
 import React, { Component } from 'react';
 
-import { myApiImitation, urls } from '../Constants';
-import MyContext from './MyContext';
-import CreateRequest from '../Services/createRequest';
-import ManageGalleriesSettings from "../Services/manageGalleriesSettings";
-import HashController from '../libs/hashController';
+import { urls } from '../Constants';
 
+import MyContext from './MyContext';
+
+import CreateRequest from '../Services/createRequest';
+import GalleryInfo from '../Services/getGalleryInfo';
+
+import HashController from '../libs/hashController';
 
 class AppProvider extends Component {
   constructor(props) {
@@ -18,9 +20,6 @@ class AppProvider extends Component {
         result: 'no',
         runtime: 0,
       },
-      changeSearchTags: this.changeSearchTags,
-      changeAllTags: this.changeAllTags,
-      ManageGalleriesSettings: ManageGalleriesSettings,
       searchTags: [],
       foldersWholeData: [],
       initialize: false,
@@ -55,6 +54,7 @@ class AppProvider extends Component {
   componentWillUnmount() {
     clearTimeout(this.timer);
     window.removeEventListener('scroll', this.asyncGetGalleries);
+    window.removeEventListener('hashchange', this.hashChange);
   }
 
   async fetchData(type) {
@@ -64,36 +64,25 @@ class AppProvider extends Component {
       url: "//www.cincopa.com/media-platform/api/redis?disable_editor=y&cmd=topfid&stats=fid-traffic-stats&end=-1"
     }).then(({ data }) => data);*/
     return Promise.all(
-      firstFiveGalleries.map(el => this.getGallery(el, type))
-    );
-  }
-
-  render() {
-    if(!this.state.initialize) return null;
-    return (
-      <MyContext.Provider value={this.state}>
-        {this.props.children}
-      </MyContext.Provider>
+      firstFiveGalleries.map(el => this.getGallery(el, type)),
     );
   }
 
   changeSearchTags = newSearchTags => {
-    this.setState(prevState => ({
-      ...prevState,
-      searchTags: newSearchTags
-    }));
+    this.setState({
+      searchTags: newSearchTags,
+    });
   };
 
   changeAllTags = newTags => {
     this.setState(prevState => ({
-      ...prevState,
       apiGetList: {
         ...prevState.apiGetList,
         items_data: {
           ...prevState.apiGetList.items_data,
-          tag_cloud: newTags
-        }
-      }
+          tag_cloud: newTags,
+        },
+      },
     }));
   };
 
@@ -101,10 +90,9 @@ class AppProvider extends Component {
     switch (type) {
       case 'add':
         this.setState(prevState => ({
-            ...prevState,
             foldersWholeData: [
               ...prevState.foldersWholeData,
-              foldersData
+              foldersData,
             ]
           }));
         break;
@@ -112,10 +100,9 @@ class AppProvider extends Component {
 
         break;
       case 'empty':
-        this.setState(prevState => ({
-          ...prevState,
-          foldersWholeData: []
-        }));
+        this.setState({
+          foldersWholeData: [],
+        });
         break;
       case 'delete':
 
@@ -124,33 +111,7 @@ class AppProvider extends Component {
   };
 
   getGallery = async (el, type) => {
-    const getStatuses = (() => {
-      const options = {
-        url: urls.getStatusUrl,
-        data: {
-          cmd: 'getstatus',
-          fid: el.sysdata.fid,
-        },
-      };
-      return CreateRequest('jsonp', options);
-    })();
-
-    const getHitData = (() => {
-      const options = {
-        url: urls.analyticsUrl,
-        data: {
-          m: 'hits-urls',
-          p: 'lw',
-          fid: el.sysdata.did
-        },
-      };
-      return CreateRequest('jsonp', options);
-    })();
-
-    const data = await Promise.all([
-      getStatuses,
-      getHitData,
-    ]);
+    const data = await GalleryInfo.getGallery(el);
     this.changeGalleriesFolders(data, type);
   };
 
@@ -161,18 +122,12 @@ class AppProvider extends Component {
           apiGetList: window['api_getlist'].response,
         }, resolve);
       }
-      else if (window.location.host === 'localhost:3000') {
-        return this.setState({
-          apiGetList: myApiImitation.response,
-        }, resolve);
-      }
       this.timer = setTimeout(this.waitForElement, 100);
     });
   };
 
   asyncGetGalleries = async () => {
     if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight - 300) {
-
       const nextGallery = this.state.apiGetList.folders.shift();
 
       if (nextGallery) {
@@ -181,7 +136,6 @@ class AppProvider extends Component {
         });
 
         await this.getGallery(nextGallery, 'add');
-
       }
     }
   };
@@ -193,7 +147,7 @@ class AppProvider extends Component {
       per_page: 50,
       disable_editor: true,
     };
-    let { hash } =  window.location;
+    let { hash } = window.location;
 
     hash = HashController.ParseHash(hash);
 
@@ -202,11 +156,11 @@ class AppProvider extends Component {
         hash[el] = params[el];
       }
     });
-    if (hash.orderby && hash.orderby ==='byTraffic') {
+    if (hash.orderby && hash.orderby === 'byTraffic') {
       hash.orderby = 'bylist';
       // hash.orderbylist =
     }
-    else if (hash.orderby && hash.orderby ==='byView') {
+    else if (hash.orderby && hash.orderby === 'byView') {
       hash.orderby = 'bylist';
       // hash.orderbylist =
     }
@@ -216,16 +170,14 @@ class AppProvider extends Component {
       formData.append(el, hash[el]);
     });
 
-
-
     let newApiGetList = await CreateRequest('ajax', {
       url: urls.getFoldersWithApiUrl,
       cache: false,
       method: 'POST',
       data: formData,
       headers: {
-        'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
-      }
+        'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
+      },
     });
 
     this.changeGalleriesFolders(null, 'empty');
@@ -233,18 +185,34 @@ class AppProvider extends Component {
     const noResult = !newApiGetList.data.response.folders.length;
     const searchTags = hash.tags ? hash.tags.split(',') : [];
 
-    await this.setState({
+    this.setState({
       noResult,
       searchTags,
       initialize: false,
       apiGetList: newApiGetList.data.response,
-      searchText: hash.search ? hash.search : '',
+      searchText: hash.search || '',
+    }, async () => {
+      await this.fetchData('add');
+      this.setState({
+        initialize: true,
+      });
     });
+  };
 
-    await this.fetchData('add');
-    this.setState({
-      initialize: true,
-    })
+  render() {
+    if (!this.state.initialize) return null;
+    const value = {
+      ...this.state,
+      changeSearchTags: this.changeSearchTags,
+      changeAllTags: this.changeAllTags,
+      changeGalleriesFolders: this.changeGalleriesFolders,
+    };
+
+    return (
+      <MyContext.Provider value={value}>
+        {this.props.children}
+      </MyContext.Provider>
+    );
   }
 }
 

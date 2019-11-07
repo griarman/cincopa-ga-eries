@@ -1,7 +1,7 @@
-import React from 'react'
+import React from 'react';
 
-export default function LoadMore() {
-  return (
-    <div className='load_more'>Load More</div>
-  )
-}
+const LoadMore = () => (
+  <div className="load_more">Load More</div>
+);
+
+export default LoadMore;

@@ -1,7 +1,8 @@
-import React from 'react'
-import ReactHighcharts from 'react-highcharts'
+import React from 'react';
+import ReactHighcharts from 'react-highcharts';
 
 const FastAnalytics = ({ hits, days }) => {
+
   const categoriesDates = days.map(day => day.date);
   const data = days.map(day => day.hits);
 
@@ -16,6 +17,7 @@ const FastAnalytics = ({ hits, days }) => {
           fontSize: '12px'
       }
     },
+    height: '145px',
     subtitle: {
       text: '',
         x: -20

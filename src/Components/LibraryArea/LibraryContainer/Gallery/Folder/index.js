@@ -1,40 +1,40 @@
-import React, { Fragment } from 'react'
+import React from 'react';
 
-import GalleryEditMenu from '../../../../../Services/GalleryEditMenu'
-import AllActionsBlock from './AllActionsBlock'
-import ItemNameDesc from './ItemNameDesc'
-import GalleryItems from './GalleryItems'
-import FastAnalytics from './FastAnalytics'
-import './style.scss'
+import GalleryEditMenu from '../../../../../Services/GalleryEditMenu';
+import AllActionsBlock from './AllActionsBlock';
+import ItemNameDesc from './ItemNameDesc';
+import GalleryItems from './GalleryItems';
+import FastAnalytics from './FastAnalytics';
+import './style.scss';
 
-const Folder = ({ folderInfo, folderAnalytics, ManageGalleriesSettings }) => (
-  <Fragment key={folderInfo.fid}>
+const Folder = ({ folderInfo, folderAnalytics }) => (
+  <>
     <tr
       id={'gallery_' + folderInfo.fid}
       className={'galleryRow library-line ' + folderInfo.loaded}
       data-did={folderInfo.did}
       data-loaded={folderInfo.loaded}
     >
-      <td className='galleryThumb landscape'>
+      <td className="galleryThumb landscape">
         <div
-          className='thumb'
+          className="thumb"
           onClick={() => {
             GalleryEditMenu(15, folderInfo.fid, folderInfo.did)
           }}>
           <div className={'img' + folderInfo.imgLoaded}>
             <a
-              dangerouslySetInnerHTML={{__html: folderInfo.img ? folderInfo.img : '<img src="_cms/design20/images/nothumb.png" ' + 'alt=""/>'}}
+              dangerouslySetInnerHTML={{__html: folderInfo.img ? folderInfo.img : '<img src="_cms/design20/images/nothumb.png" alt=""/>'}}
             />
           </div>
         </div>
         <AllActionsBlock
           fid={folderInfo.fid}
           did={folderInfo.did}
+          name={folderInfo.name}
         />
       </td>
       <ItemNameDesc
         {...folderInfo}
-        ManageGalleriesSettings={ManageGalleriesSettings}
       />
       <GalleryItems
         {...folderAnalytics}
@@ -44,12 +44,9 @@ const Folder = ({ folderInfo, folderAnalytics, ManageGalleriesSettings }) => (
       <FastAnalytics
         {...folderAnalytics}
       />
-
     </tr>
-    <tr {...folderAnalytics} >
-
-    </tr>
-  </Fragment>
+    <tr {...folderAnalytics} />
+  </>
 );
 
 export default Folder;

@@ -1,8 +1,10 @@
-import React, { Component } from 'react'
+import React, { Component } from 'react';
 
-import Helpers from '../../../../../../../libs/helpers'
-import TagCheckBox from './TagCheckBox'
-import './style.scss'
+import Helpers from '../../../../../../../libs/helpers';
+
+import TagCheckBox from './TagCheckBox';
+
+import './style.scss';
 
 class AllTags extends Component {
   constructor(props) {
@@ -23,33 +25,35 @@ class AllTags extends Component {
     this.timer = 400;
   }
   render() {
-    return(
+    return (
       <>
         <div className='all_tags'>
           <div className='tags'>
-            <input name='tags_main'
-                   value={this.state.propTags}
-                   id='id'
-                   style={{display: 'none'}}
+            <input
+              name="tags_main"
+              value={this.state.propTags}
+              id="id"
+              type="hidden"
             />
-            <div id={this.state.id + '_tagsinput'}
-                 className='tagsinput'
-                 style={{
-                   width: 300 + 'px',
-                   minHeight: 40 + 'px',
-                   height: 100 + '%'
-                 }}
+            <div
+              id={this.state.id + '_tagsinput'}
+              className='tagsinput'
+              style={{
+                width: 300 + 'px',
+                minHeight: 40 + 'px',
+                height: 100 + '%'
+              }}
             >
               {this.state.propTags && this.state.propTags.split(',').map(tag =>
-                  <span className='tag'>
-                <span>{tag}</span>
-                <a
-                  title="Removing tag"
-                  className="removeTag"
-                  href="javascript:void(0)"
-                  onClick={() => this.changeTagsStatistic(tag, 'remove')}
-                >x</a>
-              </span>
+                <span className='tag'>
+                  <span>{tag}</span>
+                  <a
+                    title="Removing tag"
+                    className="removeTag"
+                    href="javascript:void(0)"
+                    onClick={() => this.changeTagsStatistic(tag, 'remove')}
+                  >x</a>
+                </span>
               )}
               <div id={this.state.id + '_addTag'} style={{display: 'none'}}>
                 <input
@@ -85,28 +89,7 @@ class AllTags extends Component {
                 <input
                   type="text"
                   ref={this.tagRef}
-                  onKeyUp={e => {
-                    this.keyUpTimer = setTimeout(() => {
-                      clearTimeout(this.keyUpTimer);
-                      let value = this.tagRef.current.value.trim();
-                      if (value) {
-                        let newOwnTags = this.state.ownTags.filter(ownTag => ownTag.toLowerCase().indexOf(value.toLowerCase()) !== -1);
-                        this.setState(prevState => ({
-                          ...prevState,
-                          tagText: 'block',
-                          newSearchTag: value,
-                          ownTags: newOwnTags
-                        }))
-                      }
-                      else {
-                        this.setState(prevState => ({
-                          ...prevState,
-                          tagText: 'none',
-                          ownTags: this.state.initialTags
-                        }));
-                      }
-                    }, this.timer);
-                  }}
+                  onKeyUp={this.createTag}
                 />
                 <p style={{display: this.state.tagText}}>
                   <span className="searchInputNew">{this.state.newSearchTag}</span>
@@ -123,7 +106,9 @@ class AllTags extends Component {
                         tagText: 'none',
                         ownTags: Object.keys(this.state.tagCloud),
                         propTags: newTags.join(',')
-                      }), () => {this.props.setTags(this.props.fid, this.state.propTags);});
+                      }), () => {
+                        this.props.setTags(this.props.fid, this.state.propTags);
+                      });
                     }
                   }}>&nbsp;&nbsp;&nbsp;&nbsp;(Create tag)</span>
                 </p>
@@ -143,12 +128,13 @@ class AllTags extends Component {
               </ul>
             </div>
             <div className="itemsDropdown_head" style={{display: this.state.tagsContainer[0]}}>
-              <a className="btn primary smallest tagsListBtn" href="javascript:void(0)" style={{display: 'inline-block'}}>Apply</a>
+              <a className="btn primary smallest tagsListBtn" href="javascript:void(0)"
+                 style={{display: 'inline-block'}}>Apply</a>
             </div>
           </div>
         </div>
       </>
-    )
+    );
   }
 
   closeDropDown = () => {
@@ -181,17 +167,41 @@ class AllTags extends Component {
         else tagCloud[tag]--;
         break;
     }
-    console.log(propTags, tagCloud);
+
     this.setState(prevState => ({
       ...prevState,
       tagCloud,
       propTags,
       ownTags: Object.keys(tagCloud),
     }));
+
     this.props.changeAllTags(tagCloud);
     let sendTag = !propTags ? ',' : propTags;
     this.props.setTags(this.props.fid, sendTag);
     window['sendEventToGTM']("Gallery Meta", "Tag Change", "", true);
+  };
+
+  createTag = () => {
+    this.keyUpTimer = setTimeout(() => {
+      clearTimeout(this.keyUpTimer);
+      let value = this.tagRef.current.value.trim();
+      if (value) {
+        let newOwnTags = this.state.ownTags.filter(ownTag => ownTag.toLowerCase().indexOf(value.toLowerCase()) !== -1);
+        this.setState(prevState => ({
+          ...prevState,
+          tagText: 'block',
+          newSearchTag: value,
+          ownTags: newOwnTags
+        }))
+      }
+      else {
+        this.setState(prevState => ({
+          ...prevState,
+          tagText: 'none',
+          ownTags: this.state.initialTags
+        }));
+      }
+    }, this.timer);
   }
 }
 

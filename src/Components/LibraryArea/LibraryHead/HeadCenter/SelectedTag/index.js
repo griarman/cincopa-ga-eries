@@ -1,10 +1,10 @@
-import React from 'react'
+import React from 'react';
 
 const SelectedTag = ({ el: tagName, changeSearchTags, searchTags, changeHashByTags }) => (
-    <div className='selectedTag' data-val={tagName}>
-      <span>{tagName}</span>
-      <a className='removeTag' onClick={e => removeTag(e, changeSearchTags, searchTags, changeHashByTags)}>X</a>
-    </div>
+  <div className="selectedTag" data-val={tagName}>
+    <span>{tagName}</span>
+    <a className="removeTag" onClick={e => removeTag(e, changeSearchTags, searchTags, changeHashByTags)}>X</a>
+  </div>
 );
 
 const removeTag = (e, changeSearchTags, searchTags, changeHashByTags) => {
@@ -14,4 +14,4 @@ const removeTag = (e, changeSearchTags, searchTags, changeHashByTags) => {
   changeHashByTags(newSearchTags);
 };
 
-export  default SelectedTag;
+export default SelectedTag;
