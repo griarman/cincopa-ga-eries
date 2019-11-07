@@ -9,9 +9,10 @@ import './style.scss';
 const Gallery = memo(() => (
   <MyContext.Consumer>
     {({ foldersWholeData }) => (
-        foldersWholeData.map(folder => (
+        foldersWholeData.map((folder, index) => (
           <Folder
             key={folder[0].fid}
+            index={index}
             folderInfo={folder[0]}
             folderAnalytics={folder[1]}
           />

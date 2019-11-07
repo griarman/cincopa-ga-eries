@@ -86,15 +86,23 @@ class AppProvider extends Component {
     }));
   };
 
-  changeGalleriesFolders = (foldersData, type = 'add') => {
+  changeGalleriesFolders = (foldersData, type = 'add', beforeElement = false) => {
     switch (type) {
       case 'add':
-        this.setState(prevState => ({
+        if (!beforeElement) {
+          this.setState(prevState => ({
             foldersWholeData: [
               ...prevState.foldersWholeData,
               foldersData,
             ]
           }));
+        }
+        else {
+          let { foldersWholeData } = this.state;
+          foldersWholeData.splice(beforeElement, 0, foldersData);
+          console.log(foldersWholeData);
+          this.setState({ foldersWholeData });
+        }
         break;
       case 'update':
 

@@ -1,65 +1,65 @@
-import React, { Component } from 'react';
+import React, { useContext, useEffect } from 'react';
 
 import GalleriesController from '../../../../../../../../Services/galleriesController';
 
 import MyContext from '../../../../../../../../Context/MyContext';
 
-class Option extends Component {
-  constructor(props) {
-    super(props);
-    const { fid, name } = props;
-    // const { changeGalleriesFolders } = this.context;
-    // console.log(changeGalleriesFolders);
-    this.handleEvents = {
-      duplicate: {
-        onClick: async () => {
-          const data = await GalleriesController.duplicateGallery(fid, name, true);
-          // console.log(changeGalleriesFolders);
-        },
-      },
-      textRecorder: {
-        onClick: e => {
-        }
-      },
-      reSync: {
-        onClick: e => GalleriesController.resyncFolder(fid),
-      },
-      duplicateSettings: {
-        onClick: e => {
-          const data = GalleriesController.duplicateGallery(fid, name);
+const Option = ({ fid, name, a, event, rel, className, index }) => {
 
-        },
+  let elements = {};
+  const { changeGalleriesFolders } = useContext(MyContext);
+  const handleEvents = {
+    duplicate: {
+      onClick: async () => {
+        const data = await GalleriesController.duplicateGallery(fid, name, true);
+        changeGalleriesFolders(data, 'add', elements[index].closest('tr').dataset.index);
       },
-      download: {
-        onClick: e => {
-        }
+    },
+    textRecorder: {
+      onClick: e => {
+      }
+    },
+    reSync: {
+      onClick: e => GalleriesController.resyncFolder(fid),
+    },
+    duplicateSettings: {
+      onClick: e => {
+        const data = GalleriesController.duplicateGallery(fid, name);
+
       },
-      deleteGallery: {
-        onClick: e => {
-        }
-      },
-    };
-  }
-  render() {
-    console.log(this.context, 2);
-    return (
-      <li
-        className={this.props.className}
-        rel={this.props.rel}
-        {...this.handleEvents[this.props.event]}
+    },
+    download: {
+      onClick: e => {
+      }
+    },
+    deleteGallery: {
+      onClick: e => {
+      }
+    },
+  };
+
+  useEffect(() => {
+
+  });
+
+  return (
+    <li
+      className={className}
+      rel={rel}
+      {...handleEvents[event]}
+      ref={node => elements[index] = node}
+    >
+      <a data-eventname={a['data-eventname'] || ''}
+         className={a.className || ''}
       >
-        <a data-eventname={this.props.a['data-eventname'] || ''}
-           className={this.props.a.className || ''}
-        >
-          <i className={this.props.a.i.className}
-             data-eventname={this.props.a.i['data-eventname'] || ''}
-          />
-          <b>{this.props.a.b.text}</b>
-        </a>
-      </li>
-    );
-  }
-}
+        <i className={a.i.className}
+           data-eventname={a.i['data-eventname'] || ''}
+        />
+        <b>{a.b.text}</b>
+      </a>
+    </li>
+  );
 
-Option.contextType = MyContext.Consumer;
+};
+
 export default Option;

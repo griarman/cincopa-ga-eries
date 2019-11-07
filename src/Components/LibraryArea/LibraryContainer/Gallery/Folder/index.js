@@ -7,13 +7,15 @@ import GalleryItems from './GalleryItems';
 import FastAnalytics from './FastAnalytics';
 import './style.scss';
 
-const Folder = ({ folderInfo, folderAnalytics }) => (
+const Folder = ({ folderInfo, folderAnalytics, index }) => (
   <>
     <tr
       id={'gallery_' + folderInfo.fid}
       className={'galleryRow library-line ' + folderInfo.loaded}
       data-did={folderInfo.did}
-      data-loaded={folderInfo.loaded}
+      data-fid={folderInfo.fid}
+      data-loaded={true}
+      data-index={index}
     >
       <td className="galleryThumb landscape">
         <div

@@ -5,26 +5,24 @@ import CreateRequest from './createRequest';
 class GalleryInfo {
   static getGallery(el) {
     const getStatuses = (() => {
-      const options = {
+      return CreateRequest('jsonp', {
         url: urls.getStatusUrl,
         data: {
           cmd: 'getstatus',
           fid: el.sysdata.fid,
         },
-      };
-      return CreateRequest('jsonp', options);
+      });
     })();
 
     const getHitData = (() => {
-      const options = {
+      return CreateRequest('jsonp', {
         url: urls.analyticsUrl,
         data: {
           m: 'hits-urls',
           p: 'lw',
           fid: el.sysdata.did,
         },
-      };
-      return CreateRequest('jsonp', options);
+      });
     })();
 
     return Promise.all([

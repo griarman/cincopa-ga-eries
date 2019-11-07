@@ -5,6 +5,7 @@ import { urls } from '../Constants';
 
 class GalleriesController {
   static async duplicateGallery(fid, galleryName, settingsOnly = false) {
+    console.log(galleryName);
     const url =  'https://api.cincopa.com/v2/gallery.create.json';
     let data = {
       api_token: 'session',
@@ -17,7 +18,7 @@ class GalleriesController {
 
     const { success, newFid = fid } = await CreateRequest('jsonp', {
       url,
-      data
+      data,
     });
 
     if (!success) {
@@ -67,7 +68,7 @@ class GalleriesController {
           url = `${hostUrl}wizard_edit_ajax.aspx`;
 
     setTimeout(GalleriesController.updateStatus(fid), 1000);
-    return CreateRequest('', {
+    return CreateRequest('jsonp', {
       url,
       callBackName: 'json_callback',
       data: {
@@ -81,7 +82,7 @@ class GalleriesController {
     const hostUrl = window.location.pathname.indexOf('media-platform') === -1 ?  '/media-platform/' : '',
           url = `${hostUrl}wizard_edit_ajax.aspx`;
 
-    return CreateRequest('', {
+    return CreateRequest('jsonp', {
       url,
       callBackName: 'json_callback',
       data: {
