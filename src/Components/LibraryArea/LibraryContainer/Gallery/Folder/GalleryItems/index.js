@@ -5,9 +5,7 @@ import DomainsList from './DomainsList';
 import './style.scss';
 
 
-const GalleryItems = props => {
-
-  const { days, items, hits } = props;
+const GalleryItems = ({ days, items, hits, fid }) => {
   const [domainState, setDomainState] = useState(false);
   let domainsList;
 
@@ -27,25 +25,26 @@ const GalleryItems = props => {
 
     return list;
   }, []);
-console.log(domainState);
+
   return (
     <td className='galleryItems'>
       <div>
         <div className='galleryDomains' onClick={() => {
           setDomainState(true);
-        }}>
+        }}
+        >
           <i className='icon-domain'/>
           <span>
             <b>{uniqueDomainsList.length}</b> domains
           </span>
-          {domainState && <div
-            className="overLine"
-            onClick={() => {
-              console.log(123456);
-              setDomainState(false)
-            }}
-          />}
+          {domainState &&
+            <div
+              className="overLine"
+              onClick={e => { e.stopPropagation(); setDomainState(false); }}
+            />
+          }
           <DomainsList
+            fid={fid}
             domainState={domainState}
             domains={domains}
             uniqueDomainsList={uniqueDomainsList}

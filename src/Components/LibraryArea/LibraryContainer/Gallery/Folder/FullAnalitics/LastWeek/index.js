@@ -8,7 +8,6 @@ import MyContext from '../../../../../../../Context/MyContext';
 const LastWeek = ({ fid, state }) => {
 
   const { foldersWholeData } = useContext(MyContext);
-  console.log(foldersWholeData, fid);
   const folder = foldersWholeData.find(folder => folder[0].fid === fid);
 
     let weeks = folder[1];

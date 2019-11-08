@@ -44,6 +44,7 @@ const Folder = ({ folderInfo, folderAnalytics, fullAnalyticsOpen, toggleFullAnal
       />
       <GalleryItems
         {...folderAnalytics}
+        fid={folderInfo.fid}
         items={folderInfo.items}
         details={folderInfo.details}
       />
