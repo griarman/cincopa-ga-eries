@@ -4,7 +4,7 @@ import LastWeek from './LastWeek';
 import LastMonth from './LastMonth';
 import LastYear from './LastYear';
 
-const FullAnalytics = ({ fid, did, fullAnalyticsOpen }) => {
+const FullAnalytics = ({ fid, did, fullAnalyticsOpen, toggleFullAnalytics }) => {
   const [state, changeState] = useState(['block', 'none', 'none']);
   return (
     <tr
@@ -32,7 +32,7 @@ const FullAnalytics = ({ fid, did, fullAnalyticsOpen }) => {
             <a
               href="javascript:void(0)"
               onClick={() => {
-
+                console.log(fullAnalyticsOpen);
               }}
               className="btn trans"
             >

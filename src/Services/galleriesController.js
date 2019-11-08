@@ -5,7 +5,6 @@ import { urls } from '../Constants';
 
 class GalleriesController {
   static async duplicateGallery(fid, galleryName, settingsOnly = false) {
-    console.log(galleryName);
     const url =  'https://api.cincopa.com/v2/gallery.create.json';
     let data = {
       api_token: 'session',

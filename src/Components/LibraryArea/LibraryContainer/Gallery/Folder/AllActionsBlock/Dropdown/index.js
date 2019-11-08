@@ -28,7 +28,7 @@ class DropDown extends Component {
   closeDropDown = () => {
     this.setState({
       opened: 'none',
-    }, () => {console.log(this.state.opened)})
+    })
   };
   
   render() {

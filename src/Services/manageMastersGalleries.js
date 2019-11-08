@@ -3,7 +3,6 @@ import jsonpRequest from './jsonp'
 class ManageMastersGalleries {
   static getMasterGalleryThumb(fid) {
     // $(".master-galleries-list li[data-fid='" + fid + "'] ").addClass('loading');
-    // console.log('getMasterGalleryThumb');
     return jsonpRequest('/media-platform/wizard_edit_ajax.aspx', {
       cmd: 'getstatus',
       fid

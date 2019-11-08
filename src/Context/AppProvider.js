@@ -129,14 +129,13 @@ class AppProvider extends Component {
     this.changeGalleriesFolders(data, type);
   };
 
-  toggleFullAnalytics = async fid => {
+  toggleFullAnalytics = async did => {
 
     let { foldersWholeData } = this.state;
-    let folderIndex = foldersWholeData.findIndex(folder => folder[0].did === fid);
+    let folderIndex = foldersWholeData.findIndex(folder => folder[0].did === did);
     if (folderIndex !== -1) {
       let newFoldersData = Helpers.deepCopy(foldersWholeData);
       let folder = newFoldersData[folderIndex];
-
       folder[2] = folder[2] === 'none' ? 'table-row' : 'none';
       if (folder.length !== 5) {
         let month = GalleryInfo.getHitData(folder[0].did, 'lm');
@@ -148,7 +147,7 @@ class AppProvider extends Component {
       newFoldersData[folderIndex] = folder;
       this.setState({
         foldersWholeData: newFoldersData,
-      }, () => {console.log(this.state.foldersWholeData)});
+      });
     }
   };
 
